@@ -1,23 +1,29 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import s from'./orders.module.css'
 import Navbar from '../../shared/navbar/navbar'
-import { getOrderById, getOrderByStatus, getOrdersStatuses } from '../../shared/api';
+import { getOrderById, getOrderByStatus } from '../../shared/api';
 import { useNavigate } from 'react-router-dom';
 import { getToken, setToken } from '../../App';
+import backGif from '../../assets/blackink.gif'
 
 function Orders() { 
   interface statsData {
-    registrations: string,
-    total_income: string,
-    purchases: string,
-    lucky_kiss: string,
-    purchased_items: {
-        product__id: string,
-        product__name: string,
-        number_of_items_purchased: string
-    }[]
+    code: string,
+    date_created: string,
+    delivery_city_name: string | null,
+    products: any[],
+    recipient_email: string,
+    recipient_name: string,
+    recipient_phone_number: string,
+    status: string,
+    delivery_point_name: string,
+    delivery_service: string,
+    final_price: number
+
 }
-  const [order, setOrders] = useState<statsData>()
+  const [order, setOrders] = useState<statsData[]>()
+  const [orderById, setOrderById] = useState<statsData>()
+
   const [orderInfo, setOrderInfo] = useState('');
   const [orderStatus, setOrderStatus] = useState('');
 
@@ -28,34 +34,37 @@ function Orders() {
         if (!token) {
             navigate('/')
         };
-       /* let response: any;
-        if (orderStatus === '') {
+       let response: any;
+        if (orderStatus === '' && orderInfo !== '') {
             response = await getOrderById(orderInfo, token)
-
-        } else if (orderStatus !== '') {
-            response = await getOrderByStatus(orderStatus, orderInfo, token)
- 
-        }*/
-        const response = await getOrdersStatuses(token)
-        const data = await response.json()
-        console.log(data)
-
-       /* if (response.status === 401) {
-        } else {
             const data = await response.json()
             console.log(data)
+            setOrderById(data)
+            setOrders([])
 
-        }*/
+        } else {
+            response = await getOrderByStatus(orderStatus, orderInfo, token)
+            const data = await response.json()
+            console.log(data)
+            setOrders(data)
+
+ 
+        }
+        /*const response = await getOrdersStatuses(token)
+        const data = await response.json()
+        console.log(data)*/
+
     }
 
   return (
     <div className={s.statisticPage}>
         <Navbar />
         <div className={s.statistic_wrapper}>
+            <div className={s.backgroundGif}>
+                    <img src={backGif}></img>
+            </div>
             <div className={s.header}>
-                <div className={s.title}>
-                    <h1>Заказы</h1>
-                </div>
+
                     <input placeholder='Номер телефона или № заказа' className={s.formOption} value={orderInfo} onChange={(e:any) => {
                         setOrderInfo(e.target.value)
                     }} />
@@ -76,14 +85,29 @@ function Orders() {
                 </div>
 
             </div>
-            <div className={s.grid_container}>
-                <div className={s.grid_item}>Регистраций: { order ? order.registrations : '-'}</div>
-                <div className={s.grid_item}>Заработано: { order ? order.total_income : '-'}р</div>
-                <div className={s.grid_item}>Покупок: { order ? order.purchases : '-'}</div>
-                <div className={s.grid_item}>Будка поцелуев: { order ? order.lucky_kiss : '-'}</div>
-                <div className={s.grid_item}>Заработано: { order ? order.total_income : '-'}р</div>
-                <div className={s.grid_item}>Покупок: { order ? order.purchases : '-'}</div>
-                <div className={s.grid_item}>Подробнее { order ? order.lucky_kiss : '-'}</div>
+            {order && order.map((order: any) => (
+                    <div className={s.grid_container}>
+
+                        <div className={s.grid_item}>Регистраций: {order.code}</div>
+                        <div className={s.grid_item}>{order.recipient_phone_number ? order.recipient_phone_number : '-'}</div>
+                        <div className={s.grid_item}>{order.recipient_name ? order.recipient_name : '-'}</div>
+                        <div className={s.grid_item}>{order.recipient_email ? order.recipient_email : '-'}</div>
+                        <div className={s.grid_item}>{order.delivery_service ? order.delivery_service : '-'}</div>
+                        <div className={s.grid_item}>{order.final_price}</div>
+                        <div className={s.grid_item}>Подробнее</div>
+                    </div>
+
+                    ))}
+             <div className={s.grid_container}>
+         
+                    <div className={s.grid_item}>№ {orderById ? orderById.code : '-'}</div>
+                    <div className={s.grid_item}>{orderById ? orderById.recipient_phone_number : '-'}</div>
+                    <div className={s.grid_item}>{orderById ? orderById.recipient_name : '-'}</div>
+                    <div className={s.grid_item}>{orderById ? orderById.recipient_email : '-'}</div>
+                    <div className={s.grid_item}>{orderById ? orderById.delivery_service : '-'}</div>
+                    <div className={s.grid_item}>-</div>
+                    <div className={s.grid_item}>Подробнее</div>
+                    
 
                 {/*<div className={s.grid_item}>Подушки 50шт</div>
                 <div className={s.grid_item}>Салфетки 12</div>

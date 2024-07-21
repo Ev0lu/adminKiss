@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import s from'./admin-logs.module.css'
 import Navbar from '../../shared/navbar/navbar'
-import { getActionLog, getOrderById, getOrderByStatus, getOrdersStatuses } from '../../shared/api';
+import { getActionLog } from '../../shared/api';
 import { useNavigate } from 'react-router-dom';
 import { getToken, setToken } from '../../App';
+import backGif from '../../assets/blackink.gif'
+
 
 function Logs() { 
   interface logsData {
@@ -12,9 +14,6 @@ function Logs() {
             entry_datetime: string,
             admin: string,
             action: string
-        
-
-
         }[]
     ]
 }
@@ -42,10 +41,10 @@ function Logs() {
     <div className={s.statisticPage}>
         <Navbar />
         <div className={s.statistic_wrapper}>
+            <div className={s.backgroundGif}>
+                    <img src={backGif}></img>
+            </div>
             <div className={s.header}>
-                <div className={s.title}>
-                    <h1>Заказы</h1>
-                </div>
                     <input placeholder='Страница логов' className={s.formOption} value={logsPage} onChange={(e:any) => {
                         setLogsPage(e.target.value)
                     }} />
@@ -63,8 +62,10 @@ function Logs() {
                 </div>
 
             </div>
+             <div className={s.grid_wrapper}>
 
-                {logs ? logs.results.map((item: any, index: number) => (
+
+                {logs ? logs.results.map((item: any) => (
                     <div className={s.grid_container}>
                         <div key={item.action} className={s.grid_item}>{item.action}</div>
                         <div key={item.admin} className={s.grid_item}>{item.admin}</div>
@@ -72,6 +73,7 @@ function Logs() {
                     </div>     
 
                 )) : '-'}
+                             </div>
                 {/*<div className={s.grid_item}>Подушки 50шт</div>
                 <div className={s.grid_item}>Салфетки 12</div>
                 <div className={s.grid_item}>Крем 15 шт</div>*/}

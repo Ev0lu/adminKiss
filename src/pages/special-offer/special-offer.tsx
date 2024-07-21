@@ -1,54 +1,183 @@
 import { useEffect, useState } from 'react'
 import s from'./special-offer.module.css'
 import Navbar from '../../shared/navbar/navbar'
-import { getStatistics } from '../../shared/api';
+import { createPromocode, createSpecialOffer, deleteOffer, deletePromocode, getOffers, getPromocodes } from '../../shared/api';
 import { useNavigate } from 'react-router-dom';
 import { getToken, setToken } from '../../App';
+import backGif from '../../assets/blackink.gif'
 
 function SpecialOffers() { 
-  interface statsData {
-    registrations: string,
-    total_income: string,
-    purchases: string,
-    lucky_kiss: string,
-    purchased_items: {
-        product__id: string,
-        product__name: string,
-        number_of_items_purchased: string
-    }[]
-}
-  const [statistics, setStatistics] = useState<statsData>()
-  const [selectedOption, setSelectedOption] = useState('14');
 
-  const handleOptionChange = (event: React.FormEvent<HTMLInputElement>) => {
-      setSelectedOption(event.currentTarget.value);
-    };
+  interface promocodeData {
+    id: number,
+    user?: number,
+    expiration_date: string,
+    discount_percentage: number,
+    code: string,
+    one_use: boolean
+  }
+  interface offerData {
+    id: number,
+    type: string,
+    exclude_products?: number[],
+    include_products?: number[],
+    all_products?: boolean
+  }
+  const [promocodes, setPromocodes] = useState<promocodeData[]>()
+  const [offers, setOffers] = useState<offerData[]>()
+
+    
+
+  const [selectedСondition, setSelectedCondition] = useState('');
+  const [selectedGoodsInclude, setSelectedGoodsInclude] = useState('');
+  const [selectedGoodsExclude, setSelectedGoodsExclude] = useState('');
+  const [selectedCountUsability, setSelectedCountUsability] = useState('');
+  const [selectedDiscount, setSelectedDiscount] = useState('');
+  const [userId, setUserId] = useState('');
+  const [date, setDate] = useState('');
+  const [code, setCode] = useState('');
   const navigate = useNavigate()
 
-  const getAllStats = async () => {
+  const handleInputChange = (e: any) => {
+      let value = e.target.value.replace(/\D/g, ''); // Удаляем все нецифровые символы
+      if (value.length > 2) value = value.slice(0, 2) + '.' + value.slice(2);
+      if (value.length > 5) value = value.slice(0, 5) + '.' + value.slice(5);
+      if (value.length > 10) value = value.slice(0, 10); // Обрезаем до 10 символов
+      setDate(value);
+  };
+
+  const formatDate = () => {
+      const [day, month, year] = date.split('.');
+      if (day && month && year) {
+          return `${year}-${month}-${day}`;
+      }
+      return '';
+  };
+
+  const createPromocodeByAdmin = async () => {
         const token = getToken('access');
         if (!token) {
             navigate('/')
         };
-        const response = await getStatistics(selectedOption, token)
+        const dataPromo = {
+            ...(userId && {"user": Number(userId)}),
+            "expiration_date": formatDate(),
+            "discount_percentage": Number(selectedDiscount),
+            ...(code && {"code": code}),
+            "one_use": selectedCountUsability === "true"
+        }
+        const response = await createPromocode(dataPromo, token)
         
         if (response.status === 401) {
         } else {
             const data = await response.json()
             console.log(data)
-            setStatistics(data)
+            await getAllPromocodes()  
+
+        }
+  }
+
+
+ const createOfferByAdmin = async () => {
+    const token = getToken('access');
+    if (!token) {
+        navigate('/')
+    };
+
+    const include = selectedGoodsInclude.split(',').map((item) => {
+        return Number(item)
+     })
+
+    const exclude = selectedGoodsExclude.split(',').map((item) => {
+        return Number(item)
+     })
+
+    const dataPromo = {
+        type: selectedСondition,
+        all_products: selectedGoodsInclude ? false : true,
+        ...(selectedGoodsInclude && {"include_products": include}),
+        ...(selectedGoodsExclude && {"exclude_products": exclude}),
+    }
+    const response = await createSpecialOffer(dataPromo, token)
+    
+    if (response.status === 401) {
+    } else {
+        const data = await response.json()
+        console.log(data)
+        await getAllOffers()  
+
+        
+    }
+}
+
+
+    const getAllPromocodes = async () => {
+        const token = getToken('access');
+        if (!token) {
+            navigate('/')
+        };
+
+        const response = await getPromocodes(token)
+        
+        if (response.status === 401) {
+        } else {
+            const data = await response.json()
+            console.log(data)
+            setPromocodes(data)
+            
+            
         }
     }
 
+    const getAllOffers = async () => {
+        const token = getToken('access');
+        if (!token) {
+            navigate('/')
+        };
+
+        const response = await getOffers(token)
+        
+        if (response.status === 401) {
+        } else {
+            const data = await response.json()
+            console.log(data)
+            setOffers(data)
+            
+            
+        }
+    }
+
+    useEffect(() => {
+        getAllOffers()
+        getAllPromocodes()
+    }, [])
+
+    const deleteOfferById = async (item: offerData) => {
+        const token = getToken('access');
+        if (!token) {
+            navigate('/')
+        };
+        await deleteOffer(item.id, token)
+        await getAllOffers()  
+    }
+
+    const deletePromocodeById = async (item: promocodeData) => {
+        const token = getToken('access');
+        if (!token) {
+            navigate('/')
+        };
+        await deletePromocode(item.id, token)
+        await getAllPromocodes()  
+    }
 
   return (
     <div className={s.statisticPage}>
         <Navbar />
         <div className={s.statistic_wrapper}>
+        <div className={s.backgroundGif}>
+                    <img src={backGif}></img>
+            </div>
             <div className={s.header}>
-                <div className={s.title}>
-                    <h1>Промо</h1>
-                </div>
    
                 <div className={s.registrationForm_button_wrapper}>
                     <button onClick={() => {
@@ -63,60 +192,146 @@ function SpecialOffers() {
                 <div className={s.main_specialOffer}>
                     <div className={s.registrationForm_button_wrapper_main}>
                         <button onClick={() => {
-
-                        }} className={s.registrationForm_button_main}>Выйти</button>
+                            createOfferByAdmin()
+                        }} className={s.registrationForm_button_main}>Создать акцию</button>
                     </div>
                     <form className={s.form_wrapper}>
-                        <select className={s.formOption} value={selectedOption} onChange={(e:any) => {
-                            handleOptionChange(e)
+                        <select className={s.formOption} value={selectedСondition} onChange={(e:any) => {
+                            setSelectedCondition(e.target.value)
                         }}>
-                        <option value="14">Всего</option>
-                        <option value="31">Месяц</option>
-                        <option value="7">7 дней</option>
-                        <option value="1">Сутки</option>
-                        </select>
-                    </form>
-                    <form className={s.form_wrapper}>
-                        <select className={s.formOption} value={selectedOption} onChange={(e:any) => {
-                            handleOptionChange(e)
-                        }}>
-                        <option value="14">Всего</option>
-                        <option value="31">Месяц</option>
-                        <option value="7">7 дней</option>
-                        <option value="1">Сутки</option>
+                        <option value="" disabled selected>Выберите условие</option>
+                        <option value="one_free_when_buying_one">1 + 1 free</option>
+                        <option value="one_free_when_buying_two">2 + 1 free</option>
+                        <option value="cheapest_free_when_buying_three">3(cheapest - free)</option>
                         </select>
                     </form>
 
+                    <div className={s.registrationForm_field}>
+                            <input
+                            value={selectedGoodsInclude}
+                            onChange={(e) => setSelectedGoodsInclude(e.target.value)}
+                            className={`${s.registrationForm_field__input__password}`} placeholder='Включая id товаров(через запятую)'></input>
+
+
+
+                        </div> 
+                        <div className={s.registrationForm_field}>
+                            <input
+                            value={selectedGoodsExclude}
+                            onChange={(e) => setSelectedGoodsExclude(e.target.value)}
+                            className={`${s.registrationForm_field__input__password}`} placeholder='Исключая id товаров(через запятую)'></input>
+                        </div> 
+                   {/* <form className={s.form_wrapper}>
+                        <select className={s.formOption} value={selectedGoods} onChange={(e:any) => {
+                            setSelectedGoods(e.target.value)
+                        }}>
+                        <option value="14">Всего</option>
+                        <option value="31">Месяц</option>
+                        <option value="7">7 дней</option>
+                        <option value="1">Сутки</option>
+                        </select>
+                    </form>*/
+                        }
+                    
                 </div>
                 <div className={s.main_promocode}>
                     <div className={s.registrationForm_button_wrapper_main}>
                         <button onClick={() => {
-
-                        }} className={s.registrationForm_button_main}>Выйти</button>
+                            createPromocodeByAdmin()
+                        }} className={s.registrationForm_button_main}>Создать купон</button>
                     </div>
+                    <div className={s.registrationForm_field}>
+                            <input
+                            value={date}
+                            onChange={(e) => handleInputChange(e)}
+                            className={`${s.registrationForm_field__input__password}`} placeholder='Дата (Пр. 21.07.2024)'></input>
+
+                        </div> 
                     <form className={s.form_wrapper}>
-                        <select className={s.formOption} value={selectedOption} onChange={(e:any) => {
-                            handleOptionChange(e)
+                        <select className={s.formOption} value={selectedCountUsability} onChange={(e:any) => {
+                            setSelectedCountUsability(e.target.value)
                         }}>
-                        <option value="14">Всего</option>
-                        <option value="31">Месяц</option>
-                        <option value="7">7 дней</option>
-                        <option value="1">Сутки</option>
+                        <option value="" disabled selected>Кол-во использований</option>
+
+                        <option value="true">Одно кол-во</option>
+                        <option value="false">Бесконечное кол-во</option>
                         </select>
                     </form>
                     <form className={s.form_wrapper}>
-                        <select className={s.formOption} value={selectedOption} onChange={(e:any) => {
-                            handleOptionChange(e)
+                        <select className={s.formOption} value={selectedDiscount} onChange={(e:any) => {
+                            setSelectedDiscount(e.target.value)
                         }}>
-                        <option value="14">Всего</option>
-                        <option value="31">Месяц</option>
-                        <option value="7">7 дней</option>
-                        <option value="1">Сутки</option>
+                        <option value="" disabled selected>Скидка %</option>
+
+                        <option value="5">5%</option>
+                        <option value="10">10%</option>
+                        <option value="15">15%</option>
+                        <option value="20">20%</option>
+                        <option value="25">25%</option>
+                        <option value="30">30%</option>
                         </select>
                     </form>
+                    <div className={s.registrationForm_field}>
+                            <input
+                            value={userId}
+                            onChange={(e) => setUserId(e.target.value)}
+                            className={`${s.registrationForm_field__input__password}`} placeholder='ID Пользователя(Опционально)'></input>
+                    </div> 
+                    <div className={s.registrationForm_field}>
+                            <input
+                            value={code}
+                            onChange={(e) => setCode(e.target.value)}
+                            className={`${s.registrationForm_field__input__password}`} placeholder='Код купона(опционально)'></input>
+                    </div> 
                 </div>
                 <div className={s.main_stats}>
-                        <h2>Промо</h2>
+                        <div className={s.promocodesList}>
+                           <h2>Промо</h2>
+                           <div className={s.promocodesList_items}>
+                            {promocodes ? promocodes.map((item: promocodeData) => (
+                                        <div key={item.id} className={s.promocodeList_item}>
+                                            <div className={s.item_body}>
+                                                <p>id: {item.id}</p>
+                                                <p>Действует до: {item.expiration_date}</p>
+                                                <p>Скидка: {item.discount_percentage}%</p>
+                                                <p>Кол-во использований: {item.one_use === true ? 'Одно' : 'Бесконечно'}</p>
+                                                <p>code: {item.code}</p>
+                                            </div>
+                                            <p onClick={() => {
+                                                deletePromocodeById(item)
+
+                                            }} className={s.deleteInscription}>Удалить</p>
+
+
+                                        </div>
+                                    )
+
+                                    ) : '-'}
+                           </div>
+                        </div>
+                        <div className={s.offersList}>
+                           <h2>Акции</h2>
+                           <div className={s.offersList_items}>
+                           {offers ? offers.map((item: offerData) => (
+                                        <div key={item.id} className={s.promocodeList_item}>
+                                            <div className={s.item_body}>
+                                                <p>id: {item.id}</p>
+                                                <p>Тип: {item.type}</p>
+                                                <p>Действует на все товары: {item.all_products === true ? 'Да' : 'Нет'}</p>
+                                                <p>Какие товары включены: {item.include_products ? item.include_products.toString() : '-'}</p>
+                                                <p>Какие товары исключены: {item.exclude_products ? item.exclude_products.toString() : '-'}</p>
+                                            </div>
+                                            <p onClick={() => {
+                                                deleteOfferById(item)
+                                            }} className={s.deleteInscription}>Удалить</p>
+
+
+                                        </div>
+                                    )
+
+                                    ) : '-'}
+                           </div>
+                        </div>  
                 </div>
                 
             </div>   

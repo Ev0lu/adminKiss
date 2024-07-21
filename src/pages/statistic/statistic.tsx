@@ -4,6 +4,7 @@ import Navbar from '../../shared/navbar/navbar'
 import { getStatistics } from '../../shared/api';
 import { useNavigate } from 'react-router-dom';
 import { getToken, setToken } from '../../App';
+import backGif from '../../assets/blackink.gif'
 
 function Statistic() { 
   interface statsData {
@@ -48,15 +49,17 @@ function Statistic() {
     <div className={s.statisticPage}>
         <Navbar />
         <div className={s.statistic_wrapper}>
+            <div className={s.backgroundGif}>
+                    <img src={backGif}></img>
+            </div>
             <div className={s.header}>
-                <div className={s.title}>
-                    <h1>Статистика</h1>
-                </div>
+
                 <form className={s.form_wrapper}>
                     <select className={s.formOption} value={selectedOption} onChange={(e:any) => {
                         handleOptionChange(e)
                     }}>
-                    <option value="14">Всего</option>
+                    <option value="">Всего</option>
+                    <option value="14">14 дней</option>
                     <option value="31">Месяц</option>
                     <option value="7">7 дней</option>
                     <option value="1">Сутки</option>

@@ -63,7 +63,7 @@ export async function getStatistics(filter_days: string, accessToken: string | n
   }
 
 export async function getOrderByStatus(status: string, code: string, accessToken: string | null) {
-    return await fetchApiResponse(`admin/orders?filter_by_status=${status}?search_by_phone_or_code=${code}`, {
+    return await fetchApiResponse(`admin/orders?filter_by_status=${status}&search_by_phone_or_code=${code}`, {
       headers: {
         'accept': 'application/json',
         'Content-Type': 'application/json',
@@ -105,6 +105,105 @@ export async function getActionLog(page: string, page_size: string, accessToken:
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${accessToken}`
 
+      },
+
+    })
+  }
+
+interface promocodeData {
+    user?: number,
+    expiration_date: string,
+    discount_percentage: number,
+    code?: string,
+    one_use: boolean
+  }
+
+export async function createPromocode(data: promocodeData, accessToken: string | null) {
+    return await fetchApiResponse(`admin/promocode/create`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+
+    })
+  }
+
+interface offerData {
+    type: string,
+    all_products?: boolean,
+    include_products?: number[],
+    exclude_products?: number[]
+  }
+
+export async function createSpecialOffer(data: offerData, accessToken: string | null) {
+    return await fetchApiResponse(`admin/special_offer`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+
+    })
+  }
+
+export async function getPromocodes(accessToken: string | null) {
+    return await fetchApiResponse(`admin/promocode`, {
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+
+    })
+  }
+
+export async function getOffers(accessToken: string | null) {
+    return await fetchApiResponse(`admin/special_offer`, {
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+
+    })
+  }
+
+export async function deletePromocode(id: string | number, accessToken: string | null) {
+    return await fetchApiResponse(`admin/promocode/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+
+    })
+  }
+
+export async function deleteOffer(id: string | number, accessToken: string | null) {
+    return await fetchApiResponse(`admin/special_offer/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+
+    })
+  }
+
+
+export async function getKisses(accessToken: string | null) {
+    return await fetchApiResponse(`admin/lucky_kiss`, {
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
       },
 
     })

@@ -5,6 +5,7 @@ import LoginPage from './pages/login/login'
 import Orders from './pages/orders/orders';
 import Logs from './pages/admin-logs/admin-logs';
 import SpecialOffers from './pages/special-offer/special-offer';
+import Kisses from './pages/kisses/kisses';
 
 export const setToken = (tokenName: string, newToken: string | null) => {
   if (newToken) {
@@ -94,6 +95,13 @@ const router = createBrowserRouter([
     loader: sessionLoader,
     element: (
         <SpecialOffers />
+    )
+  },
+  {
+    path: '/kisses',
+    loader: sessionLoader,
+    element: (
+        <Kisses />
     )
   },
 

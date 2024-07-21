@@ -80,18 +80,17 @@ const LoginPage = () => {
                     <div className={s.registrationForm_button_wrapper}>
                             <button onClick={() => {
                                 sendLoginForm()
+                                setFlagIsCodeVisible(true)
+
                     }} className={s.registrationForm_button}>Отправить код</button>
                     </div>
 
-                    <div style={{display: flagIsCodeVisible === false ? 'none' : ''}} className={s.codeForm}>
+                    <div  className={`${s.codeForm} ${flagIsCodeVisible === false ? s.codeFormHidden : s.codeFormVisible}`}>
                         <div className={s.registrationForm_field}>
                             <input
                             value={code}
                             onChange={(e) => setCode(e.target.value)}
                             className={`${s.registrationForm_field__input__password}`} placeholder='Вам был выслан код'></input>
-
-
-
                         </div>    
                         <div className={s.registrationForm_button_wrapper}>
                                 <button onClick={() => {
@@ -99,8 +98,7 @@ const LoginPage = () => {
                         }} className={s.registrationForm_button}>Войти</button>
                         </div>
                     </div>
-                    </div>
-
+                </div>
             </div>
         </div>
     )

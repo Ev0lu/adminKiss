@@ -1,15 +1,14 @@
 .statisticPage{
     height: 100%;
     width: 100%; 
-    display: flex; 
-    overflow: hidden;
+    display: flex;  
     background-color: black;
 }
 
 .title{
     color: white;
     font-size: 10px;
-    width: 210px;
+    width: 190px;
     padding: 25px;
     border-bottom: 1px solid white;
     border-right: 1px solid white;
@@ -18,7 +17,6 @@
 .statistic_wrapper{
     width: 80%;
     overflow: auto;
-    padding-top: 20px;
 }
 
 .header{
@@ -54,7 +52,7 @@ option{
 
 .grid_container {
     display: grid;
-    grid-template-columns: repeat(7, 0.3fr);
+    grid-template-columns: repeat(5, 0.3fr);
     padding: 10px;
     overflow: auto;
     background-color: rgb(37, 36, 36);
@@ -76,7 +74,7 @@ option{
     align-items: center;
     justify-content: center;
     border: 2px solid white;
-    font-size: 16px;
+    font-size: 14px;
     box-sizing: border-box;
   }
 
@@ -84,7 +82,7 @@ option{
     
     .grid_container {
         display: grid;
-        grid-template-columns: repeat(7, 0.3fr);
+        grid-template-columns: repeat(5, 0.3fr);
         padding: 10px;
         margin-left: 0;
     }
@@ -93,8 +91,6 @@ option{
 .registrationForm_button_find_orders{
     width: 115%;
 }
-
-
 
 .statistic_wrapper{
     position: relative;
