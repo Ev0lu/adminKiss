@@ -22,7 +22,7 @@ interface accountInfoData {
     lucky_kiss_available: string
 }
   const [accounts, setAccounts] = useState<accountData[]>()
-  const [account, setAccount] = useState<accountInfoData>()
+  const [, setAccount] = useState<accountInfoData>()
   const [discountList, setDiscountList] = useState<any>([])
   const [orderList, setOrderList] = useState<any>([])
 

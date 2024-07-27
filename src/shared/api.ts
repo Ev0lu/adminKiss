@@ -376,7 +376,7 @@ export async function patchBanner(data: FormData, id: string, accessToken: strin
 export async function createBanner(data: FormData, accessToken: string | null) {
     return await fetchApiResponse(`admin/banners/`, {
       method: 'POST',
-      body: JSON.stringify(data),
+      body: data,
       headers: {
         'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
         'Authorization': `Bearer ${accessToken}`

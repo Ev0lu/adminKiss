@@ -1,60 +1,36 @@
-import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import s from './banners.module.css'
 import Navbar from '../../shared/navbar/navbar';
 import { getToken, setToken } from '../../App';
 import { useNavigate } from 'react-router-dom';
-import { createBanner, deleteBanner, getBanners, getCategories, patchBanner } from '../../shared/api';
+import { createBanner, deleteBanner, getBanners, patchBanner } from '../../shared/api';
 
 const Banners = () => {
   const [idDelete, setIdDelete] = useState<string>('');
   const [idSearch, setIdSearch] = useState<string>('');
-  const [categories, setCategories] = useState<any>()
-  const [categoriesWithFirstId, setCategoriesWithFirstId] = useState<any>()
-  const [productBanners1, setProductBanners] = useState<any>();
+  const [categories,] = useState<any>()
+  const [categoriesWithFirstId,] = useState<any>()
+  const [productBanners, setProductBanners] = useState<any>([]);
 
-  const productBanners = [
-    {
-      "id": 4,
-      "image": "https://storage.yandexcloud.net/drf-kisy-bucket/%D0%B1%D0%B0%D0%BD%D0%BD%D0%B5%D1%80_%D0%BC%D0%B0%D0%BB_%D0%B3%D0%BE%D1%80%D0%B8%D0%B7%D0%BE%D0%BD%D1%82%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9..webp?AWSAccessKeyId=YCAJEnWxe9Y8kvu18D0wREU9w&Signature=pC20xzxAmmCVpH3LqewBZslg4hQ%3D&Expires=1721984523",
-      "product": 33
-    },
-    {
-      "id": 4,
-      "image": "https://storage.yandexcloud.net/drf-kisy-bucket/%D0%B1%D0%B0%D0%BD%D0%BD%D0%B5%D1%80_%D0%BC%D0%B0%D0%BB_%D0%B3%D0%BE%D1%80%D0%B8%D0%B7%D0%BE%D0%BD%D1%82%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9..webp?AWSAccessKeyId=YCAJEnWxe9Y8kvu18D0wREU9w&Signature=pC20xzxAmmCVpH3LqewBZslg4hQ%3D&Expires=1721984523",
-      "product": 33
-    },
-    {
-      "id": 4,
-      "image": "https://storage.yandexcloud.net/drf-kisy-bucket/%D0%B1%D0%B0%D0%BD%D0%BD%D0%B5%D1%80_%D0%BC%D0%B0%D0%BB_%D0%B3%D0%BE%D1%80%D0%B8%D0%B7%D0%BE%D0%BD%D1%82%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9..webp?AWSAccessKeyId=YCAJEnWxe9Y8kvu18D0wREU9w&Signature=pC20xzxAmmCVpH3LqewBZslg4hQ%3D&Expires=1721984523",
-      "product": 33
-    },
-    {
-      "id": 4,
-      "image": "https://storage.yandexcloud.net/drf-kisy-bucket/%D0%B1%D0%B0%D0%BD%D0%BD%D0%B5%D1%80_%D0%BC%D0%B0%D0%BB_%D0%B3%D0%BE%D1%80%D0%B8%D0%B7%D0%BE%D0%BD%D1%82%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9..webp?AWSAccessKeyId=YCAJEnWxe9Y8kvu18D0wREU9w&Signature=pC20xzxAmmCVpH3LqewBZslg4hQ%3D&Expires=1721984523",
-      "product": 33
-    }
-  ]
 
   const getCategoriesById = async () => {
       const token = getToken('access');
       if (!token) {
             navigate('/')
         };
-        const response = await getCategories('2', token)
+       /* const response = await getCategories('2', token)
         const data = await response.json()
-        console.log(data)
         setCategories(data)
         const responseCategoriesWithFirstId = await getCategories('1', token)
         const dataCategoriesWithFirstId = await responseCategoriesWithFirstId.json()
-        console.log(data)
-        setCategoriesWithFirstId(dataCategoriesWithFirstId)
+        setCategoriesWithFirstId(dataCategoriesWithFirstId)*/
         const responseBannersProducts = await getBanners(token)
         const dataBannersProducts = await responseBannersProducts.json()
         console.log(dataBannersProducts)
         setProductBanners(dataBannersProducts)
   }
   useEffect(() => {
-    //getCategoriesById()
+    getCategoriesById()
   }, [])
 
   const [id, setId] = useState<string>('');
@@ -88,6 +64,9 @@ const Banners = () => {
     if (image) {
       formData.append('image', image);  
     }
+    formData.forEach((value, key) => {
+      console.log(`${key}:`, value);
+    });
 
     console.log(formData, image)
     if (id === '') {
@@ -111,15 +90,16 @@ const Banners = () => {
   };
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files && event.target.files[0];
-    if (file) {
-        setImage(file);
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      setImage(files[0]); // or handle multiple files if needed
     }
   };
 
+  
   const navigate = useNavigate()
 
-  
+
   return (
   <div className={s.statisticPage}>
     <Navbar />
@@ -149,7 +129,7 @@ const Banners = () => {
           </div>
           <div className={s.formItem}>
             <label>Картинки:</label>
-            <input className={s.fileInput} name="file" type="file" accept="image/*" multiple onChange={handleImageChange} />
+            <input className={s.fileInput} required={false} name="file" type="file" accept="image/*" onChange={handleImageChange} />
           </div>
           <button className={s.btnUpload} type="submit">Отправить</button>
         </form>
@@ -169,11 +149,11 @@ const Banners = () => {
                   </div>
                 <h2 style={{marginBottom:'15px', fontWeight: '500', fontSize: '14px'}}>Баннеры продукта</h2>
   
-                {productBanners.map((item: any) => (
+                {productBanners && productBanners.map((item: any) => (
                     <div style={{display: 'flex', gap: '10px', width: '100%', textAlign: 'center', justifyContent: 'center', alignItems: 'center'}} key={item.id}>
-                      <h3>{item.id}:</h3>
-                      <p>{item.product}</p>
-                      <img src={item.image} alt='img' style={{ width: '50px', height: '50px' }} />
+                      <p>{item.id}:</p>
+                      <p>{item.product}:</p>
+                      <img src={item.image} alt='img' style={{ width: '100px', height: '100px' }} />
                     </div>
                   ))}
 
@@ -192,7 +172,7 @@ const Banners = () => {
               </div>
               <div className={s.formItem}>
                 <label>Картинки:</label>
-                <input className={s.fileInput} name="file" type="file" accept="image/*" multiple onChange={handleImageChange} />
+                <input className={s.fileInput} name="file" type="file" accept="image/*" multiple  />
               </div>
               <button className={s.btnUpload} type="submit">Отправить</button>
             </form>
@@ -210,7 +190,7 @@ const Banners = () => {
                   ))}
 
                 {categoriesWithFirstId?.contents &&
-                  Object.entries(categoriesWithFirstId.contents).map(([parentCategoryName, subcategories]) => (
+                  Object.entries(categoriesWithFirstId.contents).map(([, subcategories]) => (
                     subcategories && Object.entries(subcategories).map(([subcategoryId, { category_name }]) => (
                       <div className={s.formItemList} key={subcategoryId}>
                         {subcategoryId}: {category_name}
@@ -235,7 +215,7 @@ const Banners = () => {
           </div>
           <div className={s.formItem}>
             <label>Картинки:</label>
-            <input className={s.fileInput} name="file" type="file" accept="image/*" multiple onChange={handleImageChange} />
+            <input className={s.fileInput} name="file" type="file" accept="image/*" multiple />
           </div>
           <button className={s.btnUpload} type="submit">Отправить</button>
         </form>
