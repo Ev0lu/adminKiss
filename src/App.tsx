@@ -6,6 +6,10 @@ import Orders from './pages/orders/orders';
 import Logs from './pages/admin-logs/admin-logs';
 import SpecialOffers from './pages/special-offer/special-offer';
 import Kisses from './pages/kisses/kisses';
+import PushMessage from './pages/push-message/push-message';
+import Accounts from './pages/accounts/accounts';
+import Meditations from './pages/meditations/meditations';
+import Banners from './pages/banners/banners';
 
 export const setToken = (tokenName: string, newToken: string | null) => {
   if (newToken) {
@@ -104,8 +108,86 @@ const router = createBrowserRouter([
         <Kisses />
     )
   },
+  {
+    path: '/push_message',
+    loader: sessionLoader,
+    element: (
+        <PushMessage />
+    )
+  },
+  {
+    path: '/accounts',
+    loader: sessionLoader,
+    element: (
+        <Accounts />
+    )
+  },
+  {
+    path: '/meditations',
+    loader: sessionLoader,
+    element: (
+        <Meditations />
+    )
+  },
+  {
+    path: '/banners',
+    element: (
+        <Banners />
+    )
+  },
 
 ])
+
+
+/*const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <LoginPage />
+  },
+  {
+    path: '/stats',
+    element: (
+        <Statistic />
+    )
+  },
+  {
+    path: '/orders',
+    element: (
+        <Orders />
+    )
+  },
+  {
+    path: '/admin_logs',
+    element: (
+        <Logs />
+    )
+  },
+  {
+    path: '/special_offers',
+    element: (
+        <SpecialOffers />
+    )
+  },
+  {
+    path: '/kisses',
+    element: (
+        <Kisses />
+    )
+  },
+  {
+    path: '/push_message',
+    element: (
+        <PushMessage />
+    )
+  },
+  {
+    path: '/accounts',
+    element: (
+        <Accounts />
+    )
+  },
+
+])*/
 
 function App() { 
   

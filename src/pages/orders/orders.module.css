@@ -3,7 +3,7 @@
     width: 100%; 
     display: flex; 
     overflow: hidden;
-    background-color: black;
+    background-color: #e2e2e2;
 }
 
 .title{
@@ -41,6 +41,10 @@
     margin-left: 6%;
     margin-right: 6%;
     padding-left: 10px;
+    background-color: #fff;
+    outline: none;
+    border: 1px solid black;
+    color: black;
     width: 30%;
     height: 50px;
     font-size: 16px;
@@ -51,6 +55,16 @@ option{
     padding: 10px;
 }
 
+.grid_container_about{
+    display: grid;
+    grid-template-columns: repeat(7, 0.3fr);
+    overflow: auto;
+    background-color: rgb(37, 36, 36);
+    margin: 15px;
+    opacity: 0.8;
+    gap: 5px;
+    background-color: rgb(197, 195, 195);
+}
 
 .grid_container {
     display: grid;
@@ -61,22 +75,23 @@ option{
     margin: 15px;
     opacity: 0.8;
     gap: 5px;
+    background-color: white;
+    border: 0.1px solid rgb(141, 137, 137);
 
   }
   
 .grid_item {
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6); /* Эффект свечения */
-
+    color: black;
     width: 100%;
     min-width: 100px;
-    height: 120px;
+    height: 100%;
     padding: 10px;
     display: flex;
     font-weight: 700;
     align-items: center;
     justify-content: center;
-    border: 2px solid white;
     font-size: 16px;
+    font-weight: 500;
     box-sizing: border-box;
   }
 

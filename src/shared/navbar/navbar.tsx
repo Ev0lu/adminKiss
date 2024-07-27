@@ -23,19 +23,19 @@ function Navbar() {
             <div onClick={() => navigate('/special_offers')} className={`${s.navbar_item} ${isActive('/special_offers') ? s.active : ''}`}>
                 <p>Акции</p>
             </div>
-            <div className={s.navbar_item}>
+            <div onClick={() => navigate('/banners')} className={`${s.navbar_item} ${isActive('/banners') ? s.active : ''}`}>
                 <p>Баннеры и сторис</p>
             </div>
-            <div className={s.navbar_item}>
+            <div onClick={() => navigate('/meditations')} className={`${s.navbar_item} ${isActive('/meditations') ? s.active : ''}`}>
                 <p>Медитации</p>
             </div>
-            <div className={s.navbar_item}>
+            <div onClick={() => navigate('/accounts')} className={`${s.navbar_item} ${isActive('/accounts') ? s.active : ''}`}>
                 <p>Аккаунты</p>
             </div>
             <div onClick={() => navigate('/admin_logs')} className={`${s.navbar_item} ${isActive('/admin_logs') ? s.active : ''}`}>
                 <p>Логи администратора</p>
             </div>
-            <div className={s.navbar_item}>
+            <div onClick={() => navigate('/push_message')} className={`${s.navbar_item} ${isActive('/push_message') ? s.active : ''}`}>
                 <p>Послать пуш-уведомление</p>
             </div>
         </div>

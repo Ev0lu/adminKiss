@@ -4,7 +4,6 @@ import Navbar from '../../shared/navbar/navbar'
 import { getOrderById, getOrderByStatus } from '../../shared/api';
 import { useNavigate } from 'react-router-dom';
 import { getToken, setToken } from '../../App';
-import backGif from '../../assets/blackink.gif'
 
 function Orders() { 
   interface statsData {
@@ -60,11 +59,7 @@ function Orders() {
     <div className={s.statisticPage}>
         <Navbar />
         <div className={s.statistic_wrapper}>
-            <div className={s.backgroundGif}>
-                    <img src={backGif}></img>
-            </div>
             <div className={s.header}>
-
                     <input placeholder='Номер телефона или № заказа' className={s.formOption} value={orderInfo} onChange={(e:any) => {
                         setOrderInfo(e.target.value)
                     }} />
@@ -85,6 +80,16 @@ function Orders() {
                 </div>
 
             </div>
+            <div className={s.grid_container_about}>
+                    <div className={s.grid_item}>№ заказа:</div>
+                    <div className={s.grid_item}>Телефон:</div>
+                    <div className={s.grid_item}>Имя:</div>
+                    <div className={s.grid_item}>Почта:</div>
+                    <div className={s.grid_item}>Сервис доставки:</div>
+                    <div className={s.grid_item}>Цена:</div>
+                    <div className={s.grid_item}></div>
+            </div>  
+
             {order && order.map((order: any) => (
                     <div className={s.grid_container}>
 
@@ -94,7 +99,7 @@ function Orders() {
                         <div className={s.grid_item}>{order.recipient_email ? order.recipient_email : '-'}</div>
                         <div className={s.grid_item}>{order.delivery_service ? order.delivery_service : '-'}</div>
                         <div className={s.grid_item}>{order.final_price}</div>
-                        <div className={s.grid_item}>Подробнее</div>
+                        <div className={s.grid_item}></div>
                     </div>
 
                     ))}
@@ -106,7 +111,7 @@ function Orders() {
                     <div className={s.grid_item}>{orderById ? orderById.recipient_email : '-'}</div>
                     <div className={s.grid_item}>{orderById ? orderById.delivery_service : '-'}</div>
                     <div className={s.grid_item}>-</div>
-                    <div className={s.grid_item}>Подробнее</div>
+                    <div className={s.grid_item}></div>
                     
 
                 {/*<div className={s.grid_item}>Подушки 50шт</div>

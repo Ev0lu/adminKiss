@@ -4,7 +4,6 @@ import Navbar from '../../shared/navbar/navbar'
 import { createPromocode, createSpecialOffer, deleteOffer, deletePromocode, getOffers, getPromocodes } from '../../shared/api';
 import { useNavigate } from 'react-router-dom';
 import { getToken, setToken } from '../../App';
-import backGif from '../../assets/blackink.gif'
 
 function SpecialOffers() { 
 
@@ -23,10 +22,42 @@ function SpecialOffers() {
     include_products?: number[],
     all_products?: boolean
   }
-  const [promocodes, setPromocodes] = useState<promocodeData[]>()
-  const [offers, setOffers] = useState<offerData[]>()
+  const [promocodes, setPromocodes] = useState<promocodeData[]>([{
+    id: 0,
+    user: 0,
+    expiration_date: "none",
+    discount_percentage: 0,
+    code: 'string',
+    one_use: true
+
+}])
+  const [offers, setOffers] = useState<offerData[]>([{
+    id: 0,
+    type: 'Nothing',
+}])
 
     
+  const [searchDiscount, setSearchDiscount] = useState('');
+  const [searchPromocode, setSearchPromocode] = useState('');
+  const [filteredPromocode, setFilteredPromocode] = useState<promocodeData[]>();
+  const [filteredDiscount, setFilteredDiscount] = useState<offerData[]>();
+
+  useEffect(() => {
+        const filteredDiscounts = searchDiscount ? offers.filter((discount: offerData) =>
+            discount.id.toString().startsWith(searchDiscount)
+        ) : offers;
+        setFilteredDiscount(filteredDiscounts)
+
+  }, [searchDiscount])
+
+  useEffect(() => {
+    const filteredPromocode = searchPromocode ? promocodes.filter((promocode: promocodeData) =>
+        promocode.id.toString().startsWith(searchPromocode)
+    ) : promocodes;
+    setFilteredPromocode(filteredPromocode)
+
+}, [searchPromocode])
+
 
   const [selectedСondition, setSelectedCondition] = useState('');
   const [selectedGoodsInclude, setSelectedGoodsInclude] = useState('');
@@ -78,37 +109,37 @@ function SpecialOffers() {
   }
 
 
- const createOfferByAdmin = async () => {
-    const token = getToken('access');
-    if (!token) {
-        navigate('/')
-    };
+    const createOfferByAdmin = async () => {
+        const token = getToken('access');
+        if (!token) {
+            navigate('/')
+        };
 
-    const include = selectedGoodsInclude.split(',').map((item) => {
-        return Number(item)
-     })
+        const include = selectedGoodsInclude.split(',').map((item) => {
+            return Number(item)
+        })
 
-    const exclude = selectedGoodsExclude.split(',').map((item) => {
-        return Number(item)
-     })
+        const exclude = selectedGoodsExclude.split(',').map((item) => {
+            return Number(item)
+        })
 
-    const dataPromo = {
-        type: selectedСondition,
-        all_products: selectedGoodsInclude ? false : true,
-        ...(selectedGoodsInclude && {"include_products": include}),
-        ...(selectedGoodsExclude && {"exclude_products": exclude}),
-    }
-    const response = await createSpecialOffer(dataPromo, token)
-    
-    if (response.status === 401) {
-    } else {
-        const data = await response.json()
-        console.log(data)
-        await getAllOffers()  
-
+        const dataPromo = {
+            type: selectedСondition,
+            all_products: selectedGoodsInclude ? false : true,
+            ...(selectedGoodsInclude && {"include_products": include}),
+            ...(selectedGoodsExclude && {"exclude_products": exclude}),
+        }
+        const response = await createSpecialOffer(dataPromo, token)
         
+        if (response.status === 401) {
+        } else {
+            const data = await response.json()
+            console.log(data)
+            await getAllOffers()  
+
+            
+        }
     }
-}
 
 
     const getAllPromocodes = async () => {
@@ -124,7 +155,7 @@ function SpecialOffers() {
             const data = await response.json()
             console.log(data)
             setPromocodes(data)
-            
+            setFilteredPromocode(data)
             
         }
     }
@@ -142,6 +173,7 @@ function SpecialOffers() {
             const data = await response.json()
             console.log(data)
             setOffers(data)
+            setFilteredDiscount(data)
             
             
         }
@@ -174,9 +206,7 @@ function SpecialOffers() {
     <div className={s.statisticPage}>
         <Navbar />
         <div className={s.statistic_wrapper}>
-        <div className={s.backgroundGif}>
-                    <img src={backGif}></img>
-            </div>
+
             <div className={s.header}>
    
                 <div className={s.registrationForm_button_wrapper}>
@@ -221,18 +251,6 @@ function SpecialOffers() {
                             onChange={(e) => setSelectedGoodsExclude(e.target.value)}
                             className={`${s.registrationForm_field__input__password}`} placeholder='Исключая id товаров(через запятую)'></input>
                         </div> 
-                   {/* <form className={s.form_wrapper}>
-                        <select className={s.formOption} value={selectedGoods} onChange={(e:any) => {
-                            setSelectedGoods(e.target.value)
-                        }}>
-                        <option value="14">Всего</option>
-                        <option value="31">Месяц</option>
-                        <option value="7">7 дней</option>
-                        <option value="1">Сутки</option>
-                        </select>
-                    </form>*/
-                        }
-                    
                 </div>
                 <div className={s.main_promocode}>
                     <div className={s.registrationForm_button_wrapper_main}>
@@ -287,8 +305,11 @@ function SpecialOffers() {
                 <div className={s.main_stats}>
                         <div className={s.promocodesList}>
                            <h2>Промо</h2>
+                           <input placeholder='Поиск по id' value={searchPromocode} onChange={(e: any) => {
+                            setSearchPromocode(e.target.value)
+                           }} className={s.search}></input>
                            <div className={s.promocodesList_items}>
-                            {promocodes ? promocodes.map((item: promocodeData) => (
+                            {filteredPromocode ? filteredPromocode.map((item: promocodeData) => (
                                         <div key={item.id} className={s.promocodeList_item}>
                                             <div className={s.item_body}>
                                                 <p>id: {item.id}</p>
@@ -311,8 +332,15 @@ function SpecialOffers() {
                         </div>
                         <div className={s.offersList}>
                            <h2>Акции</h2>
+                           <input placeholder='Поиск по id' value={searchDiscount} onChange={(e: any) => {
+                            setSearchDiscount(e.target.value)
+
+                            
+                            
+                           }}  className={s.search}></input>
+
                            <div className={s.offersList_items}>
-                           {offers ? offers.map((item: offerData) => (
+                           {filteredDiscount ? filteredDiscount.map((item: offerData) => (
                                         <div key={item.id} className={s.promocodeList_item}>
                                             <div className={s.item_body}>
                                                 <p>id: {item.id}</p>

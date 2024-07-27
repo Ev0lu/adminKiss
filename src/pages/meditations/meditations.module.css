@@ -1,0 +1,157 @@
+.statisticPage{
+    height: 100%;
+    width: 100%; 
+    display: flex; 
+    overflow: hidden;
+    background-color: #e2e2e2;
+}
+
+.statistic_wrapper{
+    width: 80%;
+    overflow: auto;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header{
+    margin: 0px 0px 20px 20px;
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.form_meditation{
+    background-color: white;
+    color: black;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-radius: 15px;
+}
+
+.form_meditation form{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-between;
+    margin-left: 5%;
+    width: 100%;
+
+
+}
+
+.formItem{
+    display: flex;
+    gap: 15%;
+    text-align: start;
+    margin-bottom: 5px;
+    width: 100%;
+    margin-right: 25px;
+}
+
+label{
+    width: 35%;
+}
+
+
+.form_meditation input[type='text']{
+    background-color: #fff;
+    outline: none;
+    width: 100%;
+    color: black;
+    border: 1px solid black;
+    padding-left: 5px;
+}
+
+
+.form_meditation input{
+    background-color: #fff;
+    outline: none;
+    width: 100%;
+    color: black;
+    border: 1px solid black;
+}
+
+.form_meditation textarea{
+    background-color: #fff;
+    outline: none;
+    border: 1px solid black;
+    resize: none;
+    width: 100%;
+    
+    color: black;
+    height: 80px;
+    padding: 5px;
+}
+
+.fileInput{
+    padding: 10px;
+    outline: none;
+    border: none;
+}
+
+
+.btnUpload{
+    margin-top: 15px;
+}
+
+
+.main_wrapper{
+    display: flex;
+    gap: 3%;
+}
+
+
+.form_meditation_delete{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 45%;
+    background-color: #fff;
+    color: black;
+    padding: 35px;
+    border-radius: 15px;
+    margin-bottom: 1%;
+}
+
+
+.form_meditation_delete input {
+    background-color: #fff;
+    color: #000;
+    padding-left: 5px;
+    outline: none;
+    border: 1px solid black;
+}
+
+
+.form_meditation_list{
+    overflow: auto;
+    height: 54%;
+    color: black;
+    background-color: #fff;
+    border-radius: 15px;
+    width: 100%;
+    padding: 15px;
+
+}
+
+.form_meditation_list input {
+    background-color: #fff;
+    color: #000;
+    padding-left: 5px;
+    margin-bottom: 8%;
+    outline: none;
+    border: 1px solid black;
+    margin-left: 20%;
+}

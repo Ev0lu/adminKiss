@@ -2,7 +2,7 @@
     height: 100%;
     width: 100%; 
     display: flex;  
-    background-color: black;
+    background-color: #e2e2e2;
 }
 
 .title{
@@ -19,8 +19,21 @@
     overflow: auto;
 }
 
+.grid_container_about{
+    display: grid;
+    grid-template-columns: repeat(5, 0.3fr);
+    overflow: auto;
+    background-color: rgb(37, 36, 36);
+    margin: 15px;
+    opacity: 0.8;
+    gap: 5px;
+    background-color: rgb(197, 195, 195);
+}
+
 .header{
-    width: 100%;
+    margin: 10px;
+
+    width: 90%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -55,7 +68,7 @@ option{
     grid-template-columns: repeat(5, 0.3fr);
     padding: 10px;
     overflow: auto;
-    background-color: rgb(37, 36, 36);
+    background-color: white;
     margin: 15px;
     opacity: 0.8;
     gap: 5px;
@@ -63,17 +76,15 @@ option{
   }
   
 .grid_item {
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6); /* Эффект свечения */
-
+    color: black;
     width: 100%;
     min-width: 100px;
-    height: 120px;
+    height: 100%;
     padding: 10px;
     display: flex;
     font-weight: 700;
     align-items: center;
     justify-content: center;
-    border: 2px solid white;
     font-size: 14px;
     box-sizing: border-box;
   }

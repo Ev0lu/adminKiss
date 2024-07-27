@@ -2,7 +2,9 @@
     height: 100%;
     width: 100%; 
     display: flex; 
-    background-color: black; 
+    background-color: #e2e2e2;
+
+
 }
 
 .title{
@@ -20,6 +22,7 @@
 
 .header{
     width: 100%;
+    margin-top: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -39,6 +42,10 @@
     width: 60%;
     height: 50px;
     font-size: 16px;
+    background-color: #fff;
+    outline: none;
+    border: 1px solid black;
+    color: black;
 }
 
 option{
@@ -51,15 +58,15 @@ option{
     grid-template-columns: repeat(4, 0.3fr);
     padding: 10px;
     overflow: auto;
-    background-color: rgb(37, 36, 36);
+    color: black;
     margin: 15px;
     opacity: 0.85;
     gap: 5px;
 
+
   }
   
 .grid_item {
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6); /* Эффект свечения */
 
     width: 100%;
     min-width: 100px;
@@ -69,7 +76,7 @@ option{
     font-weight: 700;
     align-items: center;
     justify-content: center;
-    border: 2px solid white;
+    border: 2px solid black;
     font-size: 14px;
     box-sizing: border-box;
   }

@@ -224,25 +224,10 @@ option{
     z-index: 999;
 }
 
-.backgroundGif{
-    position: absolute;
-    left: 25%;
-    top: 10%;
-    z-index: -1;
-}
-
 
 .main_specialOffer{
     background-color: white;
+    margin-left: 35%;
+    margin-top: 7%;
 }
 
-
-.search{
-    background-color: white;
-    outline: none;
-    border: none;
-    border: 1px solid black;
-    padding: 5px;
-    margin-top: 5px;
-    color: black;
-}

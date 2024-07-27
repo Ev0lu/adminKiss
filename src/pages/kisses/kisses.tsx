@@ -4,8 +4,6 @@ import Navbar from '../../shared/navbar/navbar'
 import { getKisses } from '../../shared/api';
 import { useNavigate } from 'react-router-dom';
 import { getToken, setToken } from '../../App';
-import backGif from '../../assets/blackink.gif'
-
 
 function Kisses() { 
   interface kissData {
@@ -41,9 +39,6 @@ function Kisses() {
     <div className={s.statisticPage}>
         <Navbar />
         <div className={s.statistic_wrapper}>
-            <div className={s.backgroundGif}>
-                        <img src={backGif}></img>
-                </div>
             <div className={s.header}>
                 <div className={s.registrationForm_button_wrapper}>
                     <button onClick={() => {
@@ -53,13 +48,17 @@ function Kisses() {
                 </div>
 
             </div>
-            <div className={s.main}>
-
-            </div>
+            <div className={s.grid_container_about}>
+                    <div className={s.grid_item}>Тип</div>
+                    <div className={s.grid_item}>Выигрыш</div>
+                    <div className={s.grid_item}>Последний заказ</div>
+                    <div className={s.grid_item}>Имя пользователя</div>
+                    <div className={s.grid_item}>Телефон пользователя</div>
+            </div>  
             {kisses && kisses.map((kiss: kissData) => (
                     <div className={s.grid_container}>
 
-                        <div className={s.grid_item}>Тип: {kiss.type}</div>
+                        <div className={s.grid_item}>{kiss.type}</div>
                         <div className={s.grid_item}>{kiss.discount_percentage ? kiss.discount_percentage + '%' : kiss.product ? kiss.product : '-'}</div>
                         <div className={s.grid_item}>{kiss.last_order ? kiss.last_order : '-'}</div>
                         <div className={s.grid_item}>{kiss.user_name ? kiss.user_name : '-'}</div>

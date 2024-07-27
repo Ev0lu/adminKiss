@@ -4,7 +4,6 @@ import Navbar from '../../shared/navbar/navbar'
 import { getStatistics } from '../../shared/api';
 import { useNavigate } from 'react-router-dom';
 import { getToken, setToken } from '../../App';
-import backGif from '../../assets/blackink.gif'
 
 function Statistic() { 
   interface statsData {
@@ -19,7 +18,7 @@ function Statistic() {
     }[]
 }
   const [statistics, setStatistics] = useState<statsData>()
-  const [selectedOption, setSelectedOption] = useState('14');
+  const [selectedOption, setSelectedOption] = useState('1');
 
   const handleOptionChange = (event: React.FormEvent<HTMLInputElement>) => {
       setSelectedOption(event.currentTarget.value);
@@ -49,20 +48,18 @@ function Statistic() {
     <div className={s.statisticPage}>
         <Navbar />
         <div className={s.statistic_wrapper}>
-            <div className={s.backgroundGif}>
-                    <img src={backGif}></img>
-            </div>
+
             <div className={s.header}>
 
                 <form className={s.form_wrapper}>
                     <select className={s.formOption} value={selectedOption} onChange={(e:any) => {
                         handleOptionChange(e)
                     }}>
-                    <option value="">Всего</option>
+                    <option value="1">Сутки</option>
+                    <option value="7">7 дней</option>
                     <option value="14">14 дней</option>
                     <option value="31">Месяц</option>
-                    <option value="7">7 дней</option>
-                    <option value="1">Сутки</option>
+                    <option value="">Всего</option>
                     </select>
                 </form>
                 <div className={s.registrationForm_button_wrapper}>
@@ -73,6 +70,19 @@ function Statistic() {
                 </div>
 
             </div>
+           {/* <div className={s.grid_container}>
+                <div className={s.grid_item}>Регистраций</div>
+                <div className={s.grid_item}>Заработано</div>
+                <div className={s.grid_item}>Покупок</div>
+                <div className={s.grid_item}>Будка поцелуев</div>
+                {statistics ? statistics.purchased_items.map((item: any) => (
+                        <div key={item.product__id} className={s.grid_item}>{item.product__name}: {item.number_of_items_purchased}</div>
+
+                )) : '-'}
+                </div>*/
+                }
+            
+
             <div className={s.grid_container}>
                 <div className={s.grid_item}>Регистраций: { statistics ? statistics.registrations : '-'}</div>
                 <div className={s.grid_item}>Заработано: { statistics ? statistics.total_income : '-'}р</div>
