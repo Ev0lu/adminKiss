@@ -132,69 +132,20 @@ const router = createBrowserRouter([
   },
   {
     path: '/banners',
+    loader: sessionLoader,
     element: (
         <Banners />
     )
   },
   {
     path: '/stories',
+    loader: sessionLoader,
     element: (
         <Stories />
     )
   },
 
 ])
-
-
-/*const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <LoginPage />
-  },
-  {
-    path: '/stats',
-    element: (
-        <Statistic />
-    )
-  },
-  {
-    path: '/orders',
-    element: (
-        <Orders />
-    )
-  },
-  {
-    path: '/admin_logs',
-    element: (
-        <Logs />
-    )
-  },
-  {
-    path: '/special_offers',
-    element: (
-        <SpecialOffers />
-    )
-  },
-  {
-    path: '/kisses',
-    element: (
-        <Kisses />
-    )
-  },
-  {
-    path: '/push_message',
-    element: (
-        <PushMessage />
-    )
-  },
-  {
-    path: '/accounts',
-    element: (
-        <Accounts />
-    )
-  },
-
-])*/
 
 function App() { 
   

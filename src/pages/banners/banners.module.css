@@ -143,9 +143,7 @@ label{
 
 
 .form_meditation_list{
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
+
     overflow: auto;
     height: 34%;
     color: black;
