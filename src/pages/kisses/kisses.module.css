@@ -15,7 +15,7 @@
 }
 
 .statistic_wrapper{
-    width: 80%;
+    width: 85%;
     overflow: auto;
 }
 
@@ -28,14 +28,15 @@
     opacity: 0.8;
     gap: 5px;
     background-color: rgb(197, 195, 195);
+    padding-left: 8px;
 }
 
 .header{
     margin: 10px;
 
-    width: 90%;
+    width: 98%;
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
     align-items: center;
 }
 
@@ -112,4 +113,17 @@ option{
     left: 25%;
     top: 10%;
     z-index: -1;
+}
+
+
+.searchInput{
+    width: 20%;
+    height: 30px;
+    font-size: 12px;
+    background-color: #fff;
+    outline: none;
+    border: 1px solid black;
+    color: black;
+    margin-right: 30px;
+    padding-left: 5px;
 }

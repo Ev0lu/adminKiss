@@ -34,7 +34,17 @@ function Logs() {
         getLogs()
     }, [])
 
-
+    function convertDateFormat(dateString: string): string {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
+    }
+    
   return (
     <div className={s.statisticPage}>
         <Navbar />
@@ -68,14 +78,12 @@ function Logs() {
                     <div className={s.grid_container}>
                         <div key={item.action} className={s.grid_item}>{item.action}</div>
                         <div key={item.admin} className={s.grid_item}>{item.admin}</div>
-                        <div key={item.entry_datetime} className={s.grid_item}>{item.entry_datetime}</div>
+                        <div key={item.entry_datetime} className={s.grid_item}>{convertDateFormat(item.entry_datetime)}</div>
                     </div>     
 
                 )) : '-'}
                              </div>
-                {/*<div className={s.grid_item}>Подушки 50шт</div>
-                <div className={s.grid_item}>Салфетки 12</div>
-                <div className={s.grid_item}>Крем 15 шт</div>*/}
+
         </div>
     </div>
 )

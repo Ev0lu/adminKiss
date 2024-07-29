@@ -15,14 +15,14 @@
 }
 
 .statistic_wrapper{
-    width: 80%;
+    width: 85%;
 }
 
 .header{
     margin: 10px;
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
     align-items: center;
 }
 

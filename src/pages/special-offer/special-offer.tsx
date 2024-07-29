@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import s from'./special-offer.module.css'
 import Navbar from '../../shared/navbar/navbar'
-import { createPromocode, createSpecialOffer, deleteOffer, deletePromocode, getOffers, getPromocodes } from '../../shared/api';
+import { createPromocode, createSpecialOffer, deleteOffer, deletePromocode, getCategories, getOffers, getPromocodes } from '../../shared/api';
 import { useNavigate } from 'react-router-dom';
 import { getToken, setToken } from '../../App';
 
@@ -202,12 +202,61 @@ function SpecialOffers() {
         await getAllPromocodes()  
     }
 
+    const [activeTab, setActiveTab] = useState('promocodes')
+
+    const [categories, setCategories] = useState<any>()
+  
+    const getCategoriesById = async () => {
+        const token = getToken('access');
+        if (!token) {
+              navigate('/')
+          };
+        const response = await getCategories('0', token)
+        const data = await response.json()
+        console.log(data)  
+        setCategories(data)
+        setFilteredCategories(data.contents);
+
+    }
+    const [filteredCategories, setFilteredCategories] = useState<any>()
+
+    const [searchQuery, setSearchQuery] = useState<string>('');
+
+    const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = event.target;
+        setSearchQuery(value);
+
+        // Filter kisses based on search query
+        const filtered = categories.contents.filter(
+            (product:any) => {
+                    return product.name.toLowerCase().includes(value.toLowerCase())
+
+        }
+        );
+        setFilteredCategories(filtered);
+    };
+
   return (
     <div className={s.statisticPage}>
         <Navbar />
         <div className={s.statistic_wrapper}>
 
             <div className={s.header}>
+            {activeTab === 'allProducts' && (
+                <input
+                    type="text"
+                    placeholder="Поиск по названию"
+                    value={searchQuery}
+                    onChange={handleSearchInputChange}
+                    className={s.searchInput}
+                />
+            )}
+                <button onClick={() => setActiveTab('offers')}>Акции</button>
+                <button onClick={() => setActiveTab('promocodes')}>Купоны</button>
+                <button style={{marginRight: '50px'}} onClick={() => {
+                    setActiveTab('allProducts')
+                    getCategoriesById()
+                    }}>Все товары</button>
    
                 <div className={s.registrationForm_button_wrapper}>
                     <button onClick={() => {
@@ -217,8 +266,9 @@ function SpecialOffers() {
                 </div>
 
             </div>
+            {activeTab === 'offers' && (
 
-            <div className={s.main}>
+            <div className={s.main}>    
                 <div className={s.main_specialOffer}>
                     <div className={s.registrationForm_button_wrapper_main}>
                         <button onClick={() => {
@@ -252,56 +302,103 @@ function SpecialOffers() {
                             className={`${s.registrationForm_field__input__password}`} placeholder='Исключая id товаров(через запятую)'></input>
                         </div> 
                 </div>
+                <div className={s.main_stats}>
+                    <div className={s.offersList}>
+                            <h2>Акции</h2>
+                            <input placeholder='Поиск по id' value={searchDiscount} onChange={(e: any) => {
+                                setSearchDiscount(e.target.value)
+
+                                
+                                
+                            }}  className={s.search}></input>
+
+                            <div className={s.offersList_items}>
+                            <div className={s.grid_container_about}>
+                                <div className={s.grid_item}>ID:</div>
+                                <div className={s.grid_item}>Тип:</div>
+                                <div className={s.grid_item}>Все товары:</div>
+                                <div className={s.grid_item}>Включая id товаров:</div>
+                                <div className={s.grid_item}>Исключая товары:</div>
+                                <div className={s.grid_item}></div>
+                            </div>  
+
+                            {filteredDiscount ? filteredDiscount.map((item: offerData) => (
+
+
+
+                                            <div  key={item.id} className={`${s.grid_container}`}> 
+                                                <div className={s.grid_item}>{item.id}</div>
+                                                <div className={s.grid_item}>{item.type ? item.type : '-'}</div>
+                                                <div className={s.grid_item}>{item.all_products === true ? 'Да' : 'Нет'}</div>
+                                                <div className={s.grid_item}>{item.include_products ? item.include_products.toString() : '-'}</div>
+                                                <div className={s.grid_item}>{item.exclude_products ? item.exclude_products.toString() : '-'}</div>
+                                                <div onClick={() => {
+                                                }} style={{fontWeight: '300', cursor: 'pointer'}} className={s.grid_item}><p onClick={() => {
+                                                    deleteOfferById(item)
+                                                }} className={s.deleteInscription}>Удалить</p>
+                                                </div>
+                                            </div>
+                                        )
+
+                                        ) : '-'}
+                            </div>
+                    </div> 
+                </div>  
+            </div>  
+            )}
+
+        {activeTab === 'promocodes' && (
+            <div className={s.main}>
                 <div className={s.main_promocode}>
-                    <div className={s.registrationForm_button_wrapper_main}>
-                        <button onClick={() => {
-                            createPromocodeByAdmin()
-                        }} className={s.registrationForm_button_main}>Создать купон</button>
-                    </div>
-                    <div className={s.registrationForm_field}>
-                            <input
-                            value={date}
-                            onChange={(e) => handleInputChange(e)}
-                            className={`${s.registrationForm_field__input__password}`} placeholder='Дата (Пр. 21.07.2024)'></input>
+                        <div className={s.registrationForm_button_wrapper_main}>
+                            <button onClick={() => {
+                                createPromocodeByAdmin()
+                            }} className={s.registrationForm_button_main}>Создать купон</button>
+                        </div>
+                        <div className={s.registrationForm_field}>
+                                <input
+                                value={date}
+                                onChange={(e) => handleInputChange(e)}
+                                className={`${s.registrationForm_field__input__password}`} placeholder='Дата (Пр. 21.07.2024)'></input>
 
+                            </div> 
+                        <form className={s.form_wrapper}>
+                            <select className={s.formOption} value={selectedCountUsability} onChange={(e:any) => {
+                                setSelectedCountUsability(e.target.value)
+                            }}>
+                            <option value="" disabled selected>Кол-во использований</option>
+
+                            <option value="true">Одно кол-во</option>
+                            <option value="false">Бесконечное кол-во</option>
+                            </select>
+                        </form>
+                        <form className={s.form_wrapper}>
+                            <select className={s.formOption} value={selectedDiscount} onChange={(e:any) => {
+                                setSelectedDiscount(e.target.value)
+                            }}>
+                            <option value="" disabled selected>Скидка %</option>
+
+                            <option value="5">5%</option>
+                            <option value="10">10%</option>
+                            <option value="15">15%</option>
+                            <option value="20">20%</option>
+                            <option value="25">25%</option>
+                            <option value="30">30%</option>
+                            </select>
+                        </form>
+                        <div className={s.registrationForm_field}>
+                                <input
+                                value={userId}
+                                onChange={(e) => setUserId(e.target.value)}
+                                className={`${s.registrationForm_field__input__password}`} placeholder='ID Пользователя(Опционально)'></input>
                         </div> 
-                    <form className={s.form_wrapper}>
-                        <select className={s.formOption} value={selectedCountUsability} onChange={(e:any) => {
-                            setSelectedCountUsability(e.target.value)
-                        }}>
-                        <option value="" disabled selected>Кол-во использований</option>
-
-                        <option value="true">Одно кол-во</option>
-                        <option value="false">Бесконечное кол-во</option>
-                        </select>
-                    </form>
-                    <form className={s.form_wrapper}>
-                        <select className={s.formOption} value={selectedDiscount} onChange={(e:any) => {
-                            setSelectedDiscount(e.target.value)
-                        }}>
-                        <option value="" disabled selected>Скидка %</option>
-
-                        <option value="5">5%</option>
-                        <option value="10">10%</option>
-                        <option value="15">15%</option>
-                        <option value="20">20%</option>
-                        <option value="25">25%</option>
-                        <option value="30">30%</option>
-                        </select>
-                    </form>
-                    <div className={s.registrationForm_field}>
-                            <input
-                            value={userId}
-                            onChange={(e) => setUserId(e.target.value)}
-                            className={`${s.registrationForm_field__input__password}`} placeholder='ID Пользователя(Опционально)'></input>
-                    </div> 
-                    <div className={s.registrationForm_field}>
-                            <input
-                            value={code}
-                            onChange={(e) => setCode(e.target.value)}
-                            className={`${s.registrationForm_field__input__password}`} placeholder='Код купона(опционально)'></input>
-                    </div> 
-                </div>
+                        <div className={s.registrationForm_field}>
+                                <input
+                                value={code}
+                                onChange={(e) => setCode(e.target.value)}
+                                className={`${s.registrationForm_field__input__password}`} placeholder='Код купона(опционально)'></input>
+                        </div> 
+                </div>        
                 <div className={s.main_stats}>
                         <div className={s.promocodesList}>
                            <h2>Промо</h2>
@@ -309,60 +406,55 @@ function SpecialOffers() {
                             setSearchPromocode(e.target.value)
                            }} className={s.search}></input>
                            <div className={s.promocodesList_items}>
+                           <div className={s.grid_container_about}>
+                                <div className={s.grid_item}>ID:</div>
+                                <div className={s.grid_item}>Дейстует до:</div>
+                                <div className={s.grid_item}>Скидка:</div>
+                                <div className={s.grid_item}>Кол-во использований:</div>
+                                <div className={s.grid_item}>Код:</div>
+                                <div className={s.grid_item}></div>
+                            </div>  
                             {filteredPromocode ? filteredPromocode.map((item: promocodeData) => (
-                                        <div key={item.id} className={s.promocodeList_item}>
-                                            <div className={s.item_body}>
-                                                <p>id: {item.id}</p>
-                                                <p>Действует до: {item.expiration_date}</p>
-                                                <p>Скидка: {item.discount_percentage}%</p>
-                                                <p>Кол-во использований: {item.one_use === true ? 'Одно' : 'Бесконечно'}</p>
-                                                <p>code: {item.code}</p>
-                                            </div>
-                                            <p onClick={() => {
+                                        <div  key={item.id} className={`${s.grid_container}`}> 
+                                            <div className={s.grid_item}>{item.id}</div>
+                                            <div className={s.grid_item}>{item.expiration_date ? item.expiration_date : '-'}</div>
+                                            <div className={s.grid_item}>{item.discount_percentage}%</div>
+                                            <div className={s.grid_item}>{item.one_use === true ? 'Одно' : 'Бесконечно'}</div>
+                                            <div className={s.grid_item}>{item.code}</div>
+                                            <div onClick={() => {
+                                            }} style={{fontWeight: '300', cursor: 'pointer'}} className={s.grid_item}><p onClick={() => {
                                                 deletePromocodeById(item)
-
                                             }} className={s.deleteInscription}>Удалить</p>
-
-
-                                        </div>
-                                    )
-
-                                    ) : '-'}
-                           </div>
-                        </div>
-                        <div className={s.offersList}>
-                           <h2>Акции</h2>
-                           <input placeholder='Поиск по id' value={searchDiscount} onChange={(e: any) => {
-                            setSearchDiscount(e.target.value)
-
-                            
-                            
-                           }}  className={s.search}></input>
-
-                           <div className={s.offersList_items}>
-                           {filteredDiscount ? filteredDiscount.map((item: offerData) => (
-                                        <div key={item.id} className={s.promocodeList_item}>
-                                            <div className={s.item_body}>
-                                                <p>id: {item.id}</p>
-                                                <p>Тип: {item.type}</p>
-                                                <p>Действует на все товары: {item.all_products === true ? 'Да' : 'Нет'}</p>
-                                                <p>Какие товары включены: {item.include_products ? item.include_products.toString() : '-'}</p>
-                                                <p>Какие товары исключены: {item.exclude_products ? item.exclude_products.toString() : '-'}</p>
                                             </div>
-                                            <p onClick={() => {
-                                                deleteOfferById(item)
-                                            }} className={s.deleteInscription}>Удалить</p>
-
-
                                         </div>
                                     )
-
                                     ) : '-'}
                            </div>
-                        </div>  
+                    </div>
                 </div>
-                
-            </div>   
+            </div>
+            )}
+        {activeTab === 'allProducts' && (
+            <>
+                <div className={s.grid_container_about}>
+                            <div className={s.grid_item}>ID продукта:</div>
+                            <div className={s.grid_item}>Название:</div>
+                            <div className={s.grid_item}>Изображение:</div>
+                            <div className={s.grid_item}>Цена:</div>
+                    </div>  
+                {filteredCategories && filteredCategories.map((product: any) => (
+                <>
+
+                    <div className={`${s.grid_container}`}> 
+                            <div className={s.grid_item}>{product.id}</div>
+                            <div className={s.grid_item}>{product.name ? product.name : '-'}</div>
+                            <div className={s.grid_item}>{product.image ? <img style={{width: '50px', height: '50px'}} src={product.image.image} alt='' /> : '-'}</div>
+                            <div className={s.grid_item}>{product.price ? product.price : '-'}</div>
+                    </div>
+                </>
+                ))}
+            </>
+        )}
         </div>
     </div>
 )

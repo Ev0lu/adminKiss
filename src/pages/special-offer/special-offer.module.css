@@ -15,14 +15,17 @@
 }
 
 .statistic_wrapper{
-    width: 80%;
+    width: 85%;
+    overflow-y: auto;
 }
 
 .header{
     margin: 10px;
-    width: 100%;
+    margin-right: 2px;
+    width: 98%;
     display: flex;
-    justify-content: space-between;
+    gap: 15px;
+    justify-content: end;
     align-items: center;
 }
 
@@ -52,23 +55,46 @@ option{
     padding: 10px;
 }
 
+.grid_container_about{
+    display: grid;
+    grid-template-columns: repeat(6, 0.3fr);
+    overflow: auto;
+    background-color: rgb(37, 36, 36);
+    margin: 15px;
+    opacity: 0.8;
+    gap: 5px;
+    background-color: rgb(197, 195, 195);
+}
 
 .grid_container {
     display: grid;
-    grid-template-columns: repeat(4, 0.3fr);
-    gap: 10px;
+    grid-template-columns: repeat(6, 0.3fr);
     padding: 10px;
+    overflow: auto;
+    background-color: rgb(37, 36, 36);
+    margin: 8px;
+    opacity: 0.8;
+    gap: 0px;
+    background-color: white;
+    border: 0.1px solid rgb(141, 137, 137);
+
   }
   
 .grid_item {
+    color: black;
     width: 100%;
-    height: 120px;
-    padding: 10px;
+    min-width: 100px;
+    height: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 2px;
+    padding-bottom: 2px;
     display: flex;
+    font-weight: 700;
     align-items: center;
     justify-content: center;
-    border: 4px solid white;
-    font-size: 18px;
+    font-size: 16px;
+    font-weight: 500;
     box-sizing: border-box;
   }
 
@@ -76,20 +102,23 @@ option{
     
     .grid_container {
         display: grid;
-        grid-template-columns: repeat(4, 0.3fr);
-        gap: 10px;
+        grid-template-columns: repeat(6, 0.3fr);
         padding: 10px;
         margin-left: 0;
     }
 }
 
 
+
+
 .main{
     display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
-    height: 100%;
     margin-top: 4%;
     margin-left: 1%;
+    margin-bottom: 20px;
 
     
 }
@@ -101,25 +130,29 @@ option{
     border-radius: 15px;
     opacity: 0.9;
     padding-top: 30px;
-    padding-right: 4%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5%;
+    gap: 25px;
     margin-right: 1%;
+    padding-right: 50px;
+
 }
 
 .main_promocode{
-    height: 70%;
+
+    height: 100%;
     padding: 15px;
+    padding-right: 50px;
     border-radius: 15px;
     background-color: white;
     opacity: 0.98;
-    gap: 5%;
+    gap: 25px;
     width: 32%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    
 
 }
 
@@ -127,7 +160,7 @@ option{
 .registrationForm_button_wrapper_main{
     display: flex;
 
-    margin-left: 12%;
+    margin-left: 10%;
 }
 
 
@@ -159,8 +192,11 @@ option{
 
 
 .main_stats{
-    margin-left: 1%;
-    width: 30%;
+    margin-left: 150px;
+    width: 80%;
+    height: 100%;
+    margin-top: 30px;
+    margin-right: 150px;
 }
 
 .promocodesList{
@@ -245,4 +281,17 @@ option{
     padding: 5px;
     margin-top: 5px;
     color: black;
+}
+
+
+.searchInput{
+    width: 20%;
+    height: 30px;
+    font-size: 12px;
+    background-color: #fff;
+    outline: none;
+    border: 1px solid black;
+    color: black;
+    margin-right: 30px;
+    padding-left: 5px;
 }

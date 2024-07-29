@@ -37,23 +37,30 @@ function Orders() {
         if (orderStatus === '' && orderInfo !== '') {
             response = await getOrderById(orderInfo, token)
             const data = await response.json()
-            console.log(data)
             setOrderById(data)
             setOrders([])
-
         } else {
             response = await getOrderByStatus(orderStatus, orderInfo, token)
             const data = await response.json()
-            console.log(data)
             setOrders(data)
-
- 
         }
-        /*const response = await getOrdersStatuses(token)
-        const data = await response.json()
-        console.log(data)*/
 
     }
+
+    const [selectedItemId, setSelectedItemId] = useState('')
+    const [orderSelectedInfo, setOrderSelectedInfo] = useState<any>()
+    const selectedOrder = async (id: string) => {
+        const token = getToken('access'); 
+        if (!token) {
+            navigate('/')
+        };
+        const response = await getOrderById(id, token)
+        const data = await response.json()
+        console.log(data)
+        setOrderSelectedInfo(data)
+
+    }
+
 
   return (
     <div className={s.statisticPage}>
@@ -91,18 +98,44 @@ function Orders() {
             </div>  
 
             {order && order.map((order: any) => (
-                    <div className={s.grid_container}>
+                <>
+                    <div  className={`${s.grid_container}`}> 
+                            <div className={s.grid_item}>{order.code}</div>
+                            <div className={s.grid_item}>{order.recipient_phone_number ? order.recipient_phone_number : '-'}</div>
+                            <div className={s.grid_item}>{order.recipient_name ? order.recipient_name : '-'}</div>
+                            <div className={s.grid_item}>{order.recipient_email ? order.recipient_email : '-'}</div>
+                            <div className={s.grid_item}>{order.delivery_service ? order.delivery_service : '-'}</div>
+                            <div className={s.grid_item}>{order.final_price}</div>
+                            <div onClick={() => {
+                                setSelectedItemId(order.code)
+                                selectedOrder(order.code)
 
-                        <div className={s.grid_item}>Регистраций: {order.code}</div>
-                        <div className={s.grid_item}>{order.recipient_phone_number ? order.recipient_phone_number : '-'}</div>
-                        <div className={s.grid_item}>{order.recipient_name ? order.recipient_name : '-'}</div>
-                        <div className={s.grid_item}>{order.recipient_email ? order.recipient_email : '-'}</div>
-                        <div className={s.grid_item}>{order.delivery_service ? order.delivery_service : '-'}</div>
-                        <div className={s.grid_item}>{order.final_price}</div>
-                        <div className={s.grid_item}></div>
-                    </div>
+                            }} style={{color: 'blue', fontWeight: '300', cursor: 'pointer'}} className={s.grid_item}>Подробнее {order.code === selectedItemId ? '↓' : '↑'}
+                        </div>
+                        </div>
+                    <div  className={`${s.grid_container_about_more} ${order ? order.code === selectedItemId ? s.active : s.unactive : ''}`}>
+                        <div className={s.grid_container_about_more_wrapper}>
+                                <div className={s.grid_item}>ID Продукта:</div>
+                                <div className={s.grid_item}>Название:</div>
+                                <div className={s.grid_item}>Изображение:</div>
+
+                        </div>  
+
+                       <div className={s.grid_item_more}>{orderSelectedInfo?.products && orderSelectedInfo.products.map((item:any) => (
+                            <div key={item.id} style={{display: 'flex', gap: '50px', fontWeight: '400', alignItems: 'center'
+                            }} className="product-item">
+                                <span className="product-id" style={{width: '15%'}}>{item.id}</span>
+                                <span className="product-id" style={{width: '685px'}} >{item.name}</span>
+
+                                <img className="product-image" style={{height: '50px', width: '50px'}} src={item.image} alt={'-'} />
+                              </div>
+                       ))}</div>
+
+                    </div>  
+                </>
 
                     ))}
+                <>
              <div className={s.grid_container}>
          
                     <div className={s.grid_item}>№ {orderById ? orderById.code : '-'}</div>
@@ -111,13 +144,31 @@ function Orders() {
                     <div className={s.grid_item}>{orderById ? orderById.recipient_email : '-'}</div>
                     <div className={s.grid_item}>{orderById ? orderById.delivery_service : '-'}</div>
                     <div className={s.grid_item}>-</div>
-                    <div className={s.grid_item}></div>
-                    
+                    <div onClick={() => {
+                            setSelectedItemId(orderById ? orderById.code : '')
+                            orderById && selectedOrder(orderById.code)
+                        }} style={{color: 'blue', fontWeight: '300', cursor: 'pointer'}} className={s.grid_item}>Подробнее {orderById ? orderById.code === selectedItemId ? '↓' : '↑'  : ''}</div>
 
-                {/*<div className={s.grid_item}>Подушки 50шт</div>
-                <div className={s.grid_item}>Салфетки 12</div>
-                <div className={s.grid_item}>Крем 15 шт</div>*/}
-            </div>     
+             </div>  
+             <div  className={`${s.grid_container_about_more} ${orderById ? orderById.code === selectedItemId ? s.active : s.unactive : s.unactive}`}>
+                    <div className={`${s.grid_container_about_more_wrapper}`}>
+                            <div className={s.grid_item}>ID Продукта:</div>
+                            <div className={s.grid_item}>Название:</div>
+                            <div className={s.grid_item}>Изображение:</div>
+                    </div> 
+                    <div className={s.grid_item_more}>{orderSelectedInfo?.products && orderSelectedInfo.products.map((item:any) => (
+                        
+                            <div style={{display: 'flex', gap: '50px', fontWeight: '400', alignItems: 'center'
+                            }} className="product-item">
+                              <span className="product-id" style={{width: '15%'}}>{item.id}</span>
+                                <span className="product-id" style={{width: '685px'}} >{item.name}</span>
+
+                                <img className="product-image" style={{height: '50px', width: '50px'}} src={item.image} alt={'-'} />
+                              </div>
+                       ))}</div>
+
+                    </div>  
+            </>   
         </div>
     </div>
 )

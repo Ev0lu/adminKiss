@@ -61,7 +61,6 @@ const LoginPage = () => {
             <div className={s.loginPage_content}>
               <div className={s.loginPage_content__wrapper}>
                     <div className={s.registrationForm_header}>
-                        <h1>ЛОГИН</h1>
                     </div>
 
                     <div className={s.registrationForm_field}>

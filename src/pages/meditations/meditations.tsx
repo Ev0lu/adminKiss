@@ -8,6 +8,8 @@ import { createMeditation, deleteMeditation, getCategories, patchMeditation } fr
 const Meditations = () => {
   const [idDelete, setIdDelete] = useState<string>('');
   const [idSearch, setIdSearch] = useState<string>('');
+  const [error, setError] = useState<string>('');
+
   const [categories, setCategories] = useState<any>()
   const [subcategories, setSubcategories] = useState<any>()
 
@@ -65,11 +67,8 @@ const Meditations = () => {
     event.preventDefault();
 
     const formData = new FormData();
-    if (id) {
-      formData.append('category', id);
-    } 
     if (idCategory) {
-      formData.append('idCategory', idCategory);
+      formData.append('category', idCategory);
     } 
     if (name) {
       formData.append('name', name);
@@ -96,15 +95,19 @@ const Meditations = () => {
       console.log('crate successful');
 
       const response = await createMeditation(formData, token)
-      if (response.status !== 200) {
-          setId('Error')
-        }
+      if (response.status === 200 || response.status === 201) {
+        setError('Успешно создано/пропатчено')
+      } else {
+        setError('Возникла ошибка')
+      }
     } else {
       console.log('Upload successful');
 
       const response = await patchMeditation(formData, id, token)
-      if (response.status !== 200) {
-        setId('Error')
+      if (response.status === 200 || response.status === 201) {
+        setError('Успешно создано/пропатчено')
+      } else {
+        setError('Возникла ошибка')
       }
       const data = await response.json()
       console.log(data)
@@ -180,6 +183,7 @@ const Meditations = () => {
             <input className={s.fileInput} type="file" name="file" accept="video/*" onChange={handleVideoChange} />
           </div>
           <button className={s.btnUpload} type="submit">Отправить</button>
+          <p style={{color: 'red', marginTop: '5px'}}>{error}</p>
         </form>
       </div>
       <div className="wrapper">
@@ -208,7 +212,7 @@ const Meditations = () => {
                   getCategoriesById()
                 }}>Найти</button>
 
-                { subcategories && Object.entries(subcategories.contents).map(([key, value]: any[]) => (
+                { subcategories?.contents && Object.entries(subcategories.contents).map(([key, value]: any[]) => (
                     <div className={s.formItemList} key={key}>
                       {value.id}: {value.name}
                     </div>

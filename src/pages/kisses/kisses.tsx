@@ -15,7 +15,10 @@ function Kisses() {
     user_phone: string
 
 }
-  const [kisses, setKisses] = useState<kissData[]>()
+  const [kisses, setKisses] = useState<kissData[]>([])
+  const [filteredKisses, setFilteredKisses] = useState<kissData[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+
 
   const navigate = useNavigate()
 
@@ -29,17 +32,41 @@ function Kisses() {
         const data = await response.json()
         console.log(data)
         setKisses(data)
+        setFilteredKisses(data);
+
     }
 
     useEffect(() => {
         getKissesList()
     }, [])
 
+    const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = event.target;
+        setSearchQuery(value);
+        const filtered = kisses.filter(
+            (kiss) => {
+                if (kiss.product){
+                    return kiss.product.toLowerCase().includes(value.toLowerCase()) || kiss.user_name.toLowerCase().includes(value.toLowerCase())
+                } else {
+                    return kiss.user_name.toLowerCase().includes(value.toLowerCase())
+            }
+        }
+        );
+        setFilteredKisses(filtered);
+    };
+
   return (
     <div className={s.statisticPage}>
         <Navbar />
         <div className={s.statistic_wrapper}>
             <div className={s.header}>
+                         <input
+                            type="text"
+                            placeholder="Поиск по выигрышу или имени пользователя"
+                            value={searchQuery}
+                            onChange={handleSearchInputChange}
+                            className={s.searchInput}
+                        />
                 <div className={s.registrationForm_button_wrapper}>
                     <button onClick={() => {
                         setToken('access', '')
@@ -55,10 +82,10 @@ function Kisses() {
                     <div className={s.grid_item}>Имя пользователя</div>
                     <div className={s.grid_item}>Телефон пользователя</div>
             </div>  
-            {kisses && kisses.map((kiss: kissData) => (
+            {filteredKisses && filteredKisses.map((kiss: kissData) => (
                     <div className={s.grid_container}>
 
-                        <div className={s.grid_item}>{kiss.type}</div>
+                        <div className={s.grid_item}>{kiss.type === 'prize' ? 'Приз' : 'Скидка'}</div>
                         <div className={s.grid_item}>{kiss.discount_percentage ? kiss.discount_percentage + '%' : kiss.product ? kiss.product : '-'}</div>
                         <div className={s.grid_item}>{kiss.last_order ? kiss.last_order : '-'}</div>
                         <div className={s.grid_item}>{kiss.user_name ? kiss.user_name : '-'}</div>

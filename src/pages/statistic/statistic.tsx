@@ -50,7 +50,7 @@ function Statistic() {
         <div className={s.statistic_wrapper}>
 
             <div className={s.header}>
-
+                <p style={{color: 'black', width: '13%', fontSize: '17px', fontWeight: '600', paddingLeft: '30px', marginBottom:'1px'}}>Сортировка:</p>
                 <form className={s.form_wrapper}>
                     <select className={s.formOption} value={selectedOption} onChange={(e:any) => {
                         handleOptionChange(e)

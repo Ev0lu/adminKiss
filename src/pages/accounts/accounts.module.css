@@ -15,7 +15,7 @@
 }
 
 .statistic_wrapper{
-    width: 80%;
+    width: 85%;
     overflow: auto;
 }
 
@@ -57,19 +57,44 @@ option{
 
 
 .grid_container {
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(5, 0.3fr);
-    padding: 10px;
     overflow: auto;
     background-color: white;
     margin: 15px;
+    padding: 10px;
     opacity: 0.8;
     border: 1px solid rgb(47, 47, 47);
-    gap: 5px;
+  }
+
+  .grid_container_promocodes {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, 0.3fr);
+    overflow: auto;
+    background-color: white;
+    opacity: 0.8;
+    border: 1px solid rgb(47, 47, 47);
+
+
+  }
+
+  .grid_container_orderList {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, 0.3fr);
+    overflow: auto;
+    background-color: white;
+    opacity: 0.8;
+    border: 1px solid rgb(47, 47, 47);
+
 
   }
 
   .grid_container_about {
+    width: 100%;
+
     display: grid;
     grid-template-columns: repeat(5, 0.3fr);
     overflow: auto;
@@ -87,6 +112,27 @@ option{
     overflow: auto;
     background-color: rgb(197, 195, 195);
     margin: 15px;
+    opacity: 0.8;
+    gap: 5px;
+  }
+
+  .grid_container_about_orderList {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: repeat(5, 0.3fr);
+    overflow: auto;
+    background-color: rgb(197, 195, 195);
+    opacity: 0.8;
+    gap: 5px;
+  }
+  .grid_container_about_promocodes {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: repeat(5, 0.3fr);
+    overflow: auto;
+    background-color: rgb(197, 195, 195);
     opacity: 0.8;
     gap: 5px;
   }
@@ -110,7 +156,7 @@ option{
     .grid_container {
         display: grid;
         grid-template-columns: repeat(5, 0.3fr);
-        padding: 10px;
+       
     }
 }
 
@@ -241,5 +287,33 @@ option{
 
 .items{
     display: flex;
-    gap: 5px
+    gap: 5px;
+    height: 150px;
+    margin-left: 30px;
+    width: 100%;
+}
+
+.items_wrapper{
+    width: 35%;
+    height: 150px;
+    
+}
+
+
+
+.hidden {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
+}
+
+/* Конечное состояние (видимое) */
+.visible {
+    opacity: 1;
+    transition: max-height 0.5s ease-in, opacity 0.5s ease-in;
+    gap: 5px;
+    margin: 15px;
+    padding: 10px;
+
 }

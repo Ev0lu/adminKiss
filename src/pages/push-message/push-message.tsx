@@ -10,6 +10,8 @@ function PushMessage() {
   const [userId, setUserId] = useState('');
   const [title, setTitle] = useState('');
   const [bodyMessage, setBodyMessage] = useState('');
+  const [error, setError] = useState('');
+
 
   const navigate = useNavigate()
 
@@ -29,13 +31,14 @@ function PushMessage() {
         const response = await notification(data, token)
         
         if (response.status === 200) {
-            setUserId('Успешно отправлено')
+            setUserId('')
+            setError('Успешно отправлено')
             setTitle('')
             setBodyMessage('')
         } else if (response.status === 403) {
-            setUserId('Пользователь выключил уведомления')
+            setError('Пользователь выключил уведомления')
         } else {
-            setUserId('Error')
+            setError('Error')
         }
     }
 
@@ -78,6 +81,8 @@ function PushMessage() {
                             onChange={(e) => setBodyMessage(e.target.value)}
                             className={`${s.registrationForm_field__input__password}`} placeholder='Тело сообщения'></input>
                         </div> 
+                        <p style={{color: 'red', marginTop: '5px'}}>{error}</p>
+
                 </div>                
         </div>
     </div>

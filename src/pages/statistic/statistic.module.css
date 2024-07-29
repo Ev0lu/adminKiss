@@ -17,7 +17,8 @@
 }
 
 .statistic_wrapper{
-    width: 80%;
+    width: 85%;
+    padding-top: 10px;
 }
 
 .header{
@@ -38,9 +39,8 @@
 }
 
 .formOption{
-    margin-left: 12.5%;
-    width: 60%;
-    height: 50px;
+    width: 20%;
+    height: 30px;
     font-size: 16px;
     background-color: #fff;
     outline: none;

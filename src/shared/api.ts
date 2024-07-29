@@ -316,9 +316,8 @@ export async function getCategories(id: string, accessToken: string | null) {
 export async function patchMeditation(data: FormData, id: string, accessToken: string | null) {
     return await fetchApiResponse(`admin/meditation/${id}`, {
       method: 'PATCH',
-      body: JSON.stringify(data),
+      body: data,
       headers: {
-        'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
         'Authorization': `Bearer ${accessToken}`
       },
 
@@ -328,9 +327,8 @@ export async function patchMeditation(data: FormData, id: string, accessToken: s
 export async function createMeditation(data: FormData, accessToken: string | null) {
     return await fetchApiResponse(`admin/meditation-create/`, {
       method: 'POST',
-      body: JSON.stringify(data),
+      body: data,
       headers: {
-        'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
         'Authorization': `Bearer ${accessToken}`
       },
 
@@ -364,21 +362,31 @@ export async function getBanners(accessToken: string | null) {
 export async function patchBanner(data: FormData, id: string, accessToken: string | null) {
     return await fetchApiResponse(`admin/banners/${id}/update`, {
       method: 'PATCH',
-      body: JSON.stringify(data),
+      body: data,
       headers: {
-        'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
         'Authorization': `Bearer ${accessToken}`
       },
 
     })
   }
 
+export async function patchCategoryBanner(data: FormData, id: string, accessToken: string | null) {
+    return await fetchApiResponse(`admin/category-image-update/${id}`, {
+      method: 'PATCH',
+      body: data,
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      },
+
+    })
+  }
+
+
 export async function createBanner(data: FormData, accessToken: string | null) {
     return await fetchApiResponse(`admin/banners/`, {
       method: 'POST',
       body: data,
       headers: {
-        'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
         'Authorization': `Bearer ${accessToken}`
       },
 
@@ -387,6 +395,61 @@ export async function createBanner(data: FormData, accessToken: string | null) {
 
 export async function deleteBanner(id: string, accessToken: string | null) {
     return await fetchApiResponse(`admin/banners/${id}/`, {
+      method: 'DELETE',
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+
+    })
+  }
+
+
+export async function getStories(accessToken: string | null) {
+    return await fetchApiResponse(`admin/stories/`, {
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+
+    })
+  }
+
+export async function getStoriesById(id: string, accessToken: string | null) {
+    return await fetchApiResponse(`admin/stories/${id}/`, {
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+
+    })
+  }
+
+export async function patchStories(data: FormData, id: string, accessToken: string | null) {
+    return await fetchApiResponse(`admin/stories/${id}/update`, {
+      method: 'PATCH',
+      body: data,
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      },
+    })
+  }
+
+export async function postStoriesVideo(data: FormData, accessToken: string | null) {
+    return await fetchApiResponse(`admin/stories/add_video`, {
+      method: 'POST',
+      body: data,
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      },
+    })
+  }
+
+export async function deleteStoriesVideo(id: string, accessToken: string | null) {
+    return await fetchApiResponse(`admin/stories/video/${id}`, {
       method: 'DELETE',
       headers: {
         'accept': 'application/json',

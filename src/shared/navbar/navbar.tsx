@@ -24,7 +24,10 @@ function Navbar() {
                 <p>Акции</p>
             </div>
             <div onClick={() => navigate('/banners')} className={`${s.navbar_item} ${isActive('/banners') ? s.active : ''}`}>
-                <p>Баннеры и сторис</p>
+                <p>Баннеры</p>
+            </div>
+            <div onClick={() => navigate('/stories')} className={`${s.navbar_item} ${isActive('/stories') ? s.active : ''}`}>
+                <p>Сторис</p>
             </div>
             <div onClick={() => navigate('/meditations')} className={`${s.navbar_item} ${isActive('/meditations') ? s.active : ''}`}>
                 <p>Медитации</p>

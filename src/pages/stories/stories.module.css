@@ -111,10 +111,10 @@ label{
 
 .main_wrapper{
     display: flex;
-    height: 600px;
     gap: 3%;
     width: 100%;
     margin-left: 2%;
+    margin-bottom: 2%;
 }
 
 
@@ -124,10 +124,11 @@ label{
     align-items: center;
     justify-content: start;
     width: 100%;
-    height: 45%;
+    height: 100%;
     background-color: #fff;
     color: black;
-    padding: 15px 35px;
+    padding: 15px 30px;
+    padding-top: 15px;
     border-radius: 15px;
     margin-bottom: 1%;
 }
@@ -147,9 +148,7 @@ label{
     flex-direction: column;
     justify-content: start;
     overflow: auto;
-    height: 34%;
     color: black;
-    background-color: #fff;
     border-radius: 15px;
     width: 100%;
     padding: 15px;
@@ -226,4 +225,13 @@ label{
     color: black;
     
     padding: 5px;
+}
+
+.story{
+    margin-top: 15px;
+    margin-bottom: 15px;
+    height: 300px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 15px;
 }

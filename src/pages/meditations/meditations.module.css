@@ -19,7 +19,7 @@
     margin: 0px 0px 20px 20px;
     width: 95%;
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
     align-items: center;
 }
 

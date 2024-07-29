@@ -107,7 +107,8 @@ interface accountInfoData {
    }
 
    const [selectedItemId, setSelectedItemId] = useState(null);
-
+   const [isVisibleOrders, setIsVisibleOrders] = useState(false)
+   const [isVisiblePromocodes, setIsVisiblePromocodes] = useState(false)
 
   return (
     <div className={s.statisticPage}>
@@ -152,7 +153,7 @@ interface accountInfoData {
                         <div className={s.grid_item}>{item.id}</div>
                         <div className={s.grid_item}>{item.full_name}</div>
                         <div className={s.grid_item}>{item.email}</div>
-                        <div onClick={() => {
+                        <button onClick={() => {
                             setEmail('')
                             setPhone('')
                             setName('')
@@ -161,19 +162,22 @@ interface accountInfoData {
                             setLuckyKissCount('')
                             getInfoAboutAccount(item.id)
                             setSelectedItemId(item.id)
+                            if (item.id === selectedItemId) {
+                                setSelectedItemId(null)
+                            }
 
-                        }} style={{color: 'blue', fontWeight: '300', cursor: 'pointer'}} className={s.grid_item}>Подробнее {item.id === selectedItemId ? '↓' : '↑'}</div>
+                        }} style={{color: 'white', fontWeight: '300', cursor: 'pointer', width: '150px', marginLeft: '50px'}} className={s.grid_item}>Подробнее {item.id === selectedItemId ? '↓' : '↑'}</button>
                                 
                         {flagToChangeProfileInfo ?
                                 <div style={{color: 'blue', fontWeight: '300', cursor: 'pointer'}} className={s.grid_item} onClick={() => {
                                 setFlagToChangeProfileInfo(false)
-                            }}>Изменить</div>
+                            }}></div>
                         : 
                             <div style={{color: 'blue', fontWeight: '300', cursor: 'pointer'}}  className={s.grid_item} onClick={() => {
                                 patchProfile(item.id)
                                 setFlagToChangeProfileInfo(true)
 
-                            }}>Сохранить</div> }
+                            }}></div> }
 
                     </div>     
 
@@ -231,44 +235,96 @@ interface accountInfoData {
                                 }} className={s.inputAccount}></input>
                             </div>
                     </div>
+                    {flagToChangeProfileInfo ?
+                                <button style={{fontWeight: '300', cursor: 'pointer', marginLeft: '10%', height: '60px'}}  onClick={() => {
+                                setFlagToChangeProfileInfo(false)
+                            }}>Изменить</button>
+                        : 
+                            <button style={{fontWeight: '300', cursor: 'pointer', marginLeft: '10%', height: '60px'}} onClick={() => {
+                                patchProfile(item.id)
+                                setFlagToChangeProfileInfo(true)
+
+                            }}>Сохранить</button> }
                 </div>
 
 
-                <p style={{color: 'black', marginTop: '20px', fontWeight: '600'}}>ЗАКАЗЫ ПОЛЬЗОВАТЕЛЯ</p>
-                { orderList.length !== 0 ? orderList.map((item:any) => (
-                        <div className={s.order}>
-                        <p>id: {item.id}</p>
-                        <p>Код: {item.code}</p>
-                        <p>Дата: {item.date_created}</p>
-                        <p>status: {item.status}</p>
-                        <p>Выбранные товары:</p>
-                        <div className="img_wrapper">
-                            {item.images.map((item: string, index: number) => (
-                                <img key={index} src={item} />
+                <p onClick={() => {
+                    if (isVisibleOrders === true) {
+                        setIsVisibleOrders(false)
+                    } else {
+                        setIsVisibleOrders(true)
 
-                            ))}
-                        </div>
-                    </div> 
+                    }
+                }} style={{color: 'black', marginTop: '20px', fontWeight: '600'}}>ЗАКАЗЫ ПОЛЬЗОВАТЕЛЯ {isVisibleOrders ? '↑' : '↓'}</p>
+                <div className={`${s.grid_container_about_orderList} ${isVisibleOrders ? s.visible : s.hidden}`}>
+                                <div className={s.grid_item}>ID:</div>
+                                <div className={s.grid_item}>Код:</div>
+                                <div className={s.grid_item}>Дата:</div>
+                                <div className={s.grid_item}>Статус:</div>
+                                <div className={s.grid_item}>Выбранные товары:</div>
+                </div>  
+                { orderList.length !== 0 ? orderList.map((item:any) => (
+                    
+                    <div  key={item.id} className={`${s.grid_container_orderList}  ${isVisibleOrders ? s.visible : s.hidden}`}> 
+                        <div className={s.grid_item}>{item.id}</div>
+                        <div className={s.grid_item}>{item.code}</div>
+                        <div className={s.grid_item}>{item.date_created}</div>
+                        <div className={s.grid_item}>{item.status}</div>
+                        <div className={s.grid_item}>
+                                {item.images.map((item: string, index: number) => (
+                                    <img style={{width: '50px', height: '50px'}} key={index} src={item} />
+
+                                ))}
+                            </div>                    </div>
                 )) : 
                     <div className={s.order}>
                         <p>Нет информации</p>
                     </div> 
                 }
-                <p style={{color: 'black', marginTop: '5px', fontWeight: '600', marginBottom: '15px'}}>ПРОМОКОДЫ ПОЛЬЗОВАТЕЛЯ</p>
+
+                <p onClick={() => {
+                    setIsVisibleOrders(false)      
+                }} style={{color: 'black', marginTop: '5px', fontWeight: '600', marginBottom: '15px', backgroundColor: 'lightgrey', borderRadius: '15px', padding: '15px', textAlign: 'center', display: isVisibleOrders ? 'flex' : 'none', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'}}> {isVisibleOrders ? '↑' : '↓'}</p>
+
+                <p onClick={() => {
+                                       if (isVisiblePromocodes === true) {
+                                        setIsVisiblePromocodes(false)
+                                    } else {
+                                        setIsVisiblePromocodes(true)
+                
+                                    }
+                }} style={{color: 'black', marginTop: '5px', fontWeight: '600', marginBottom: '15px'}}>ПРОМОКОДЫ ПОЛЬЗОВАТЕЛЯ {isVisiblePromocodes ? '↑' : '↓'}</p>
+                <div className={`${s.grid_container_about_promocodes} ${isVisiblePromocodes ? s.visible : s.hidden}`}>
+                                <div className={s.grid_item}>ID:</div>
+                                <div className={s.grid_item}>Дейстует до:</div>
+                                <div className={s.grid_item}>Код:</div>
+                                <div className={s.grid_item}>Использовано:</div>
+                                <div className={s.grid_item}></div>
+                </div>  
+                
+
                 {discountList.length !== 0 ? discountList.map((item: any) => (
-                        <div className={s.promocodes}>
-                            <p>id: {item.id}</p>
-                            <p>Действует до: {item.expiration_date}</p>
-                            <p>Код: {item.code}</p>
-                            <p>Использовано: {item.used}</p>
-                        </div>
+
+                        <div  key={item.id} className={`${s.grid_container_promocodes} ${isVisiblePromocodes ? s.visible : s.hidden}`}> 
+                                                <div className={s.grid_item}>{item.id}</div>
+                                                <div className={s.grid_item}>{item.expiration_date}</div>
+                                                <div className={s.grid_item}>{item.code}</div>
+                                                <div className={s.grid_item}>{item.used === true ? 'Да' : 'Нет' }</div>
+                                                <div className={s.grid_item}></div>
+
+                                            </div>
                 ))
+
+                
+                
                 :
                     <div className={s.promocodes}>
                         <p>Нет информации</p>
                     </div>
                 }
-
+                <p onClick={() => {
+                    setIsVisiblePromocodes(false)      
+                }} style={{color: 'black', marginTop: '5px', fontWeight: '600', marginBottom: '15px', backgroundColor: 'lightgrey', borderRadius: '15px', padding: '15px', textAlign: 'center', display: isVisiblePromocodes ? 'flex' : 'none', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'}}> {isVisiblePromocodes ? '↑' : '↓'}</p>
 
                 </div>  
                 </>

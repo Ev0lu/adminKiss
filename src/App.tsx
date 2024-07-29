@@ -10,6 +10,7 @@ import PushMessage from './pages/push-message/push-message';
 import Accounts from './pages/accounts/accounts';
 import Meditations from './pages/meditations/meditations';
 import Banners from './pages/banners/banners';
+import Stories from './pages/stories/stories';
 
 export const setToken = (tokenName: string, newToken: string | null) => {
   if (newToken) {
@@ -133,6 +134,12 @@ const router = createBrowserRouter([
     path: '/banners',
     element: (
         <Banners />
+    )
+  },
+  {
+    path: '/stories',
+    element: (
+        <Stories />
     )
   },
 
