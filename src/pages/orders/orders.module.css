@@ -184,5 +184,6 @@ option{
     align-items: start;
     margin-left: 18%;
     gap: 10px;
+    padding-top: 10px;
 
   }

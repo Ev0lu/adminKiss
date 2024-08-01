@@ -68,9 +68,11 @@ function Orders() {
         <div className={s.statistic_wrapper}>
             <div className={s.header}>
                     <input placeholder='Номер телефона или № заказа' className={s.formOption} value={orderInfo} onChange={(e:any) => {
+                        setSelectedItemId('')
                         setOrderInfo(e.target.value)
                     }} />
                     <input placeholder='Введите статус заказа' className={s.formOption} value={orderStatus} onChange={(e:any) => {
+                        setSelectedItemId('')
                         setOrderStatus(e.target.value)
                     }} />
                 <div className={s.registrationForm_button_wrapper}>
@@ -107,8 +109,14 @@ function Orders() {
                             <div className={s.grid_item}>{order.delivery_service ? order.delivery_service : '-'}</div>
                             <div className={s.grid_item}>{order.final_price}</div>
                             <div onClick={() => {
-                                setSelectedItemId(order.code)
+                                if (selectedItemId !== ''){
+                                    setSelectedItemId('')
+                                } else {
+                                    setSelectedItemId(order.code)
+                                }
+
                                 selectedOrder(order.code)
+
 
                             }} style={{color: 'blue', fontWeight: '300', cursor: 'pointer'}} className={s.grid_item}>Подробнее {order.code === selectedItemId ? '↓' : '↑'}
                         </div>
@@ -145,8 +153,12 @@ function Orders() {
                     <div className={s.grid_item}>{orderById ? orderById.delivery_service : '-'}</div>
                     <div className={s.grid_item}>-</div>
                     <div onClick={() => {
-                            setSelectedItemId(orderById ? orderById.code : '')
-                            orderById && selectedOrder(orderById.code)
+                            if (selectedItemId !== '' ) {
+                                setSelectedItemId('')
+                            }else {
+                                orderById && selectedOrder(orderById.code)
+                                setSelectedItemId(orderById ? orderById.code : '')
+                            }
                         }} style={{color: 'blue', fontWeight: '300', cursor: 'pointer'}} className={s.grid_item}>Подробнее {orderById ? orderById.code === selectedItemId ? '↓' : '↑'  : ''}</div>
 
              </div>  

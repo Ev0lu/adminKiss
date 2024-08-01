@@ -11,6 +11,8 @@ import Accounts from './pages/accounts/accounts';
 import Meditations from './pages/meditations/meditations';
 import Banners from './pages/banners/banners';
 import Stories from './pages/stories/stories';
+import { Provider } from 'react-redux';
+import {store} from './shared/store/store'
 
 export const setToken = (tokenName: string, newToken: string | null) => {
   if (newToken) {
@@ -150,7 +152,10 @@ const router = createBrowserRouter([
 function App() { 
   
   return (
+    <Provider store={store}>
       <RouterProvider router={router} />
+    </Provider>
+
   )
 }
 

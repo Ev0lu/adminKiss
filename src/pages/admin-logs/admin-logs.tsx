@@ -28,6 +28,7 @@ function Logs() {
         const response = await getActionLog(logsPage, '4', token)
         const data = await response.json()
         setLogs(data)
+        console.log(data)
     }
 
     useEffect(() => {

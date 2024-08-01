@@ -1,15 +1,26 @@
-import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import { useState, ChangeEvent, FormEvent } from 'react';
 import s from './stories.module.css'
 import Navbar from '../../shared/navbar/navbar';
 import { getToken, setToken } from '../../App';
 import { useNavigate } from 'react-router-dom';
-import { deleteStoriesVideo, getStories, getStoriesById, patchStories, postStoriesVideo } from '../../shared/api';
+import { deleteStoriesVideo, patchStories, postStoriesVideo } from '../../shared/api';
+import { Story } from '../../shared/story/story';
+
 
 const Stories = () => {
   const [idStory, setIdStory] = useState<string>('');
   const [idChangeStory, setIdChangeStory] = useState<string>('');
   const [idStoriesDelete, setStoriesIdDelete] = useState<string>('');
   const [image, setImage] = useState<File | null>(null);
+  const [storiesProducts, setStoriesProducts] = useState<string>('');
+
+  const [storyCount, ] = useState<number[]>([1, 2, 3])
+  const [video, setVideo] = useState<File | null>(null);
+
+  const [storyCreateError, setStoryCreateError] = useState<string>('');
+  const [storyPatchError, setStoryPatchError] = useState<string>('');
+  const [storyDeleteError, setStoryPatchDeleteError] = useState<string>('');
+
 
   const handleStoriesFormDelete = async () => {
     const token = getToken('access');
@@ -17,8 +28,11 @@ const Stories = () => {
           navigate('/')
       };
     const response = await deleteStoriesVideo(idStoriesDelete, token)
-    if (response.status !== 200) {
-      setStoriesIdDelete('Error')
+    if (response.status === 200 || response.status === 201 || response.status === 204) {
+        setStoryPatchDeleteError('Успешно удалено')
+    } else {
+        setStoryPatchDeleteError('Произошла ошибка')
+
     }
 }
 
@@ -29,13 +43,9 @@ const Stories = () => {
     }
   };
 
-  const [storyCreateError, setStoryCreateError] = useState<string>('');
-  const [storyPatchError, setStoryPatchError] = useState<string>('');
-
   
   const navigate = useNavigate()
 
-  const [video, setVideo] = useState<File | null>(null);
 
   const handleVideoChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
@@ -88,30 +98,7 @@ const Stories = () => {
         setStoryPatchError('Возникла ошибка')
       } 
   };
-  const [stories, setStories] = useState<any>([]);
-  const [storiesProducts, setStoriesProducts] = useState<string>('');
 
-  useEffect(() => {
-    getAdminStories()
-  }, [])
-
-  const getAdminStories = async () => {
-    const token = getToken('access');
-    if (!token) {
-          navigate('/')
-      }
-      const storyList = await getStories(token);
-      const dataStoryList = await storyList.json()
-      const detailedStories = await Promise.all(
-        dataStoryList.map(async (story: any) => {
-          const details = await getStoriesById(story.id, token);
-          const dataDetails = await details.json()
-          return dataDetails;
-        })
-      );
-      setStories(detailedStories);
-
-}
   return (
   <div className={s.statisticPage}>
     <Navbar />
@@ -152,12 +139,14 @@ const Stories = () => {
                   <label>Айди:</label>
                   <input type="text" placeholder='Id для удаления (31, 32, 34, 35)' value={idStoriesDelete} onChange={(e) => setStoriesIdDelete(e.target.value)} />
                 </div>
+                <p style={{color: 'red', marginTop: '5px'}}>{storyDeleteError}</p>
+
                 <button style={{marginTop: '55%'}} onClick={() => handleStoriesFormDelete()} className={s.btnUpload} type="submit">Удалить</button>
             </div>
 
         </div>
         <div className={s.form_meditation}>
-        <h2 style={{marginBottom:'15px', fontWeight: '500', fontSize: '14px'}}>ИЗМЕНИТЬ СТОРИС</h2>
+        <h2 style={{marginBottom:'15px', fontWeight: '500', fontSize: '14px'}}>ИЗМЕНИТЬ ПРЕВЬЮ/ID продуктов у СТОРИС</h2>
         <form onSubmit={handlePatchStories}>
         <div className={s.formItem}>
             <label>Айди сторис:</label>
@@ -168,7 +157,7 @@ const Stories = () => {
             <textarea value={storiesProducts} onChange={(e) => setStoriesProducts(e.target.value)} />
           </div>
           <div className={s.formItem}>
-            <label>Картинки:</label>
+            <label>Превью:</label>
             <input className={s.fileInput} onChange={handleImageChange} name="file" type="file" accept="image/*" />
           </div>
           <button className={s.btnUpload} type="submit">Сохранить</button>
@@ -179,29 +168,8 @@ const Stories = () => {
     </div>
     <div className={s.form_meditation_list}>
             <h2 style={{marginBottom:'15px', fontWeight: '500', fontSize: '18px', marginTop: '10px'}}>Сторисы</h2>
-              {stories && stories.map((story: any) => (
-                <div  className={s.story}>
-                <h2 style={{marginBottom: '10px', fontSize: '18px', marginTop: '10px'}}>Сторис №{story.id}</h2>
-                <div style={{display: 'flex', gap: '10px', alignItems: 'center', justifyContent: 'start'}} className="preview">
-                  <p>Превью сторис:</p>
-                  <img style={{width: '50px', height: '50px'}} src={story.preview} alt="Preview" />
-                </div>
-                <ul style={{display: 'flex', gap:'5px', marginBottom: '10px', alignItems: 'center', justifyContent: 'start', marginTop: '10px'}} className="products">
-                  ID товаров:
-                  {story?.products && story.products.map((productId: any) => (
-                    <li key={productId}>{productId}</li>
-                  ))}
-                </ul>
-                <div style={{display: 'flex', gap: '10px', alignItems: 'center', justifyContent: 'start'}} className="videos">
-                  <p>Видео:</p>
-                  {story?.videos && story.videos.map((video:any) => (
-                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'start'}} key={video.id}>
-                      <p>{video.id}</p>
-                      <img style={{width: '50px', height: '50px'}} src={video.video} alt={`Video ${video.id}`} />
-                    </div>
-                  ))}
-                </div>
-              </div>
+              {storyCount.map((storyNumber: number) => (
+                <Story id={`${storyNumber}`}/>
               ))}
             </div>
     </div>

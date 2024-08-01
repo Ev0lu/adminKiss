@@ -9,6 +9,7 @@ const Meditations = () => {
   const [idDelete, setIdDelete] = useState<string>('');
   const [idSearch, setIdSearch] = useState<string>('');
   const [error, setError] = useState<string>('');
+  const [deleteError, setDeleteError] = useState<string>('');
 
   const [categories, setCategories] = useState<any>()
   const [subcategories, setSubcategories] = useState<any>()
@@ -52,8 +53,11 @@ const Meditations = () => {
             navigate('/')
         };
       const response = await deleteMeditation(idDelete, token)
-      if (response.status !== 200) {
-        setIdDelete('Error')
+      if (response.status === 200 || response.status === 201 || response.status === 204) {
+        setDeleteError('Успешно удалено')
+      } else {
+        setDeleteError('Произошла ошибка')
+
       }
       const data = await response.json()
       console.log(data)
@@ -193,6 +197,8 @@ const Meditations = () => {
                   <label>Айди:</label>
                   <input type="text" placeholder='Id для удаления' value={idDelete} onChange={(e) => setIdDelete(e.target.value)} />
                 </div>
+                <p style={{color: 'red', marginTop: '5px'}}>{deleteError}</p>
+
                 <button onClick={() => handleFormDelete()} className={s.btnUpload} type="submit">Удалить</button>
             </div>
             <div className={s.form_meditation_list}>
