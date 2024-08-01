@@ -5,10 +5,11 @@ import poster from '../../assets/vite.svg'
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchStoryById, selectLoading, selectStoryById } from '../store/storiesSlice';
+import { AppDispatch } from '../store/store';
 
 export const Story = ({id}: {id: string}) => {
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate()
     const story = useSelector(selectStoryById(id));  // Используем новый селектор
     const loading = useSelector(selectLoading);

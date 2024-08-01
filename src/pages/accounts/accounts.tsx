@@ -255,7 +255,7 @@ interface accountInfoData {
                         setIsVisibleOrders(true)
 
                     }
-                }} style={{color: 'black', marginTop: '20px', fontWeight: '600'}}>ЗАКАЗЫ ПОЛЬЗОВАТЕЛЯ {isVisibleOrders ? '↑' : '↓'}</p>
+                }} style={{color: 'black', marginTop: '20px', fontWeight: '600', textDecoration: 'underline', cursor: 'pointer'}}>ЗАКАЗЫ ПОЛЬЗОВАТЕЛЯ {isVisibleOrders ? '↑' : '↓'}</p>
                 <div className={`${s.grid_container_about_orderList} ${isVisibleOrders ? s.visible : s.hidden}`}>
                                 <div className={s.grid_item}>ID:</div>
                                 <div className={s.grid_item}>Код:</div>
@@ -293,7 +293,7 @@ interface accountInfoData {
                                         setIsVisiblePromocodes(true)
                 
                                     }
-                }} style={{color: 'black', marginTop: '5px', fontWeight: '600', marginBottom: '15px'}}>ПРОМОКОДЫ ПОЛЬЗОВАТЕЛЯ {isVisiblePromocodes ? '↑' : '↓'}</p>
+                }} style={{color: 'black', marginTop: '5px', fontWeight: '600', marginBottom: '15px', textDecoration: 'underline', cursor: 'pointer'}}>ПРОМОКОДЫ ПОЛЬЗОВАТЕЛЯ {isVisiblePromocodes ? '↑' : '↓'}</p>
                 <div className={`${s.grid_container_about_promocodes} ${isVisiblePromocodes ? s.visible : s.hidden}`}>
                                 <div className={s.grid_item}>ID:</div>
                                 <div className={s.grid_item}>Дейстует до:</div>
