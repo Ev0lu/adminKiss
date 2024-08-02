@@ -159,7 +159,7 @@ const paginatedDiscountList = getPaginatedData(discountList, currentPagePromocod
                 </div>
 
             </div>
-             <div className={s.grid_wrapper}>
+             <div  style={{width: '96%'}} className={s.grid_wrapper}>
              <div className={s.grid_container_about}>
                         <div className={s.grid_item}>Айди пользователя</div>
                         <div className={s.grid_item}>ФИО</div>
@@ -169,7 +169,7 @@ const paginatedDiscountList = getPaginatedData(discountList, currentPagePromocod
                     </div>     
 
                 {accounts ? accounts.map((item: any) => (
-                    <>
+                    <div >
                     <div key={item.id} className={s.grid_container}>
                         <div className={s.grid_item}>{item.id}</div>
                         <div className={s.grid_item}>{item.full_name}</div>
@@ -374,7 +374,7 @@ const paginatedDiscountList = getPaginatedData(discountList, currentPagePromocod
                 }} style={{color: 'black', marginTop: '5px', fontWeight: '600', marginBottom: '15px', backgroundColor: 'lightgrey', borderRadius: '15px', padding: '15px', textAlign: 'center', display: isVisiblePromocodes ? 'flex' : 'none', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'}}> {isVisiblePromocodes ? '↑' : '↓'}</p>
 
                 </div>  
-                </>
+                </ div>
 
                 )) : <p style={{marginLeft: '15px', color: 'black'}}>Аккаунтов нет</p>}
 

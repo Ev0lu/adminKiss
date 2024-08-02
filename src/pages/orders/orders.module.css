@@ -18,6 +18,7 @@
 .statistic_wrapper{
     width: 85%;
     overflow: auto;
+    overflow-x: hidden;
     padding-top: 20px;
 }
 

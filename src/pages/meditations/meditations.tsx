@@ -168,23 +168,23 @@ const Meditations = () => {
           </div>
           <div className={s.formItem}>
             <label>Имя:</label>
-            <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+            <input type="text" required value={name} onChange={(e) => setName(e.target.value)} />
           </div>
           <div className={s.formItem}>
             <label>Описание:</label>
-            <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+            <textarea value={description} required onChange={(e) => setDescription(e.target.value)} />
           </div>
           <div className={s.formItem}>
             <label>Картинки:</label>
-            <input className={s.fileInput} name="file" type="file" accept="image/*" multiple onChange={handleImageChange} />
+            <input className={s.fileInput} required name="file" type="file" accept="image/*" multiple onChange={handleImageChange} />
           </div>
           <div className={s.formItem}>
             <label>Аудио:</label>
-            <input className={s.fileInput} type="file" name="file" accept="audio/*" onChange={handleAudioChange} />
+            <input className={s.fileInput} required type="file" name="file" accept="audio/*" onChange={handleAudioChange} />
           </div>
           <div className={s.formItem}>
             <label>Видео:</label>
-            <input className={s.fileInput} type="file" name="file" accept="video/*" onChange={handleVideoChange} />
+            <input className={s.fileInput} required type="file" name="file" accept="video/*" onChange={handleVideoChange} />
           </div>
           <button className={s.btnUpload} type="submit">Отправить</button>
           <p style={{color: 'red', marginTop: '5px'}}>{error}</p>

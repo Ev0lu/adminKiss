@@ -17,6 +17,7 @@
 .statistic_wrapper{
     width: 85%;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .header{

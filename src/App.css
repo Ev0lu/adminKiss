@@ -2,8 +2,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  overflow: hidden;
-  scrollbar-color: rgb(183, 182, 182) lightgrey}
+  scrollbar-color: rgb(183, 182, 182) lightgrey;
+}
 
 .app{
   width: 100%;

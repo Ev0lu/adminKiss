@@ -110,7 +110,14 @@ function Orders() {
                             <div className={s.grid_item}>{order.final_price}</div>
                             <div onClick={() => {
                                 if (selectedItemId !== ''){
-                                    setSelectedItemId('')
+                                    if (order.code === selectedItemId) {
+                                        setSelectedItemId('')
+
+                                    } else {
+                                        setSelectedItemId(order.code)
+                                    }
+
+
                                 } else {
                                     setSelectedItemId(order.code)
                                 }
