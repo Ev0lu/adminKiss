@@ -4,6 +4,7 @@ import Navbar from '../../shared/navbar/navbar'
 import { useNavigate } from 'react-router-dom';
 import { getToken, setToken } from '../../App';
 import { getAccountById, getAccountOrders, getAccountPromocodes, getAccounts, patchAccount } from '../../shared/api';
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 
 function Accounts() { 
@@ -109,6 +110,26 @@ interface accountInfoData {
    const [selectedItemId, setSelectedItemId] = useState(null);
    const [isVisibleOrders, setIsVisibleOrders] = useState(false)
    const [isVisiblePromocodes, setIsVisiblePromocodes] = useState(false)
+   const ITEMS_PER_PAGE = 5; // Number of items per page
+
+   const [currentPageOrders, setCurrentPageOrders] = useState(1);
+   const [currentPagePromocodes, setCurrentPagePromocodes] = useState(1);
+
+   const handleOrdersPageChange = (newPage: number) => {
+    setCurrentPageOrders(newPage);
+};
+
+const handlePromocodesPageChange = (newPage: number) => {
+    setCurrentPagePromocodes(newPage);
+};
+
+const getPaginatedData = (data: any[], page: number) => {
+    const startIndex = (page - 1) * ITEMS_PER_PAGE;
+    return data.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+};
+
+const paginatedOrderList = getPaginatedData(orderList, currentPageOrders);
+const paginatedDiscountList = getPaginatedData(discountList, currentPagePromocodes);
 
   return (
     <div className={s.statisticPage}>
@@ -160,8 +181,16 @@ interface accountInfoData {
                             setLastName('')
                             setBirthDate('')
                             setLuckyKissCount('')
+                            setDiscountList([])
+                            setOrderList([])
+                            setIsVisibleOrders(false)
+                            setIsVisiblePromocodes(false)
+                            setCurrentPageOrders(1);
+                            setCurrentPagePromocodes(1)
                             getInfoAboutAccount(item.id)
                             setSelectedItemId(item.id)
+ 
+                          
                             if (item.id === selectedItemId) {
                                 setSelectedItemId(null)
                             }
@@ -263,7 +292,7 @@ interface accountInfoData {
                                 <div className={s.grid_item}>Статус:</div>
                                 <div className={s.grid_item}>Выбранные товары:</div>
                 </div>  
-                { orderList.length !== 0 ? orderList.map((item:any) => (
+                { orderList.length !== 0 ? paginatedOrderList.map((item:any) => (
                     
                     <div  key={item.id} className={`${s.grid_container_orderList}  ${isVisibleOrders ? s.visible : s.hidden}`}> 
                         <div className={s.grid_item}>{item.id}</div>
@@ -272,15 +301,26 @@ interface accountInfoData {
                         <div className={s.grid_item}>{item.status}</div>
                         <div className={s.grid_item}>
                                 {item.images.map((item: string, index: number) => (
-                                    <img style={{width: '50px', height: '50px'}} key={index} src={item} />
+                                    <LazyLoadImage src={item}
+                                    width={50} height={50}
+                                    key={index}
+                                    alt="Image Alt"
+                                    effect="blur"
+                                />
 
                                 ))}
                             </div>                    </div>
                 )) : 
-                    <div className={s.order}>
+                    <div className={`${s.order} ${isVisibleOrders ? s.visible : s.hidden}`}>
                         <p>Нет информации</p>
                     </div> 
                 }
+
+            <div style={{display: 'flex', gap: '5px'}} className={`${s.pagination} ${isVisibleOrders ? s.visible : s.hidden}`}>
+                {Array.from({ length: Math.ceil(orderList.length / ITEMS_PER_PAGE) }, (_, i) => (
+                    <button key={i} onClick={() => handleOrdersPageChange(i + 1)}>{i + 1}</button>
+                ))}
+            </div>
 
                 <p onClick={() => {
                     setIsVisibleOrders(false)      
@@ -303,9 +343,9 @@ interface accountInfoData {
                 </div>  
                 
 
-                {discountList.length !== 0 ? discountList.map((item: any) => (
+                {discountList.length !== 0 ? paginatedDiscountList.map((item: any) => (
 
-                        <div  key={item.id} className={`${s.grid_container_promocodes} ${isVisiblePromocodes ? s.visible : s.hidden}`}> 
+                        <div key={item.id} className={`${s.grid_container_promocodes} ${isVisiblePromocodes ? s.visible : s.hidden}`}> 
                                                 <div className={s.grid_item}>{item.id}</div>
                                                 <div className={s.grid_item}>{item.expiration_date}</div>
                                                 <div className={s.grid_item}>{item.code}</div>
@@ -318,10 +358,17 @@ interface accountInfoData {
                 
                 
                 :
-                    <div className={s.promocodes}>
+                    <div className={`${s.promocodes} ${isVisiblePromocodes ? s.visible : s.hidden}`}>
                         <p>Нет информации</p>
                     </div>
                 }
+
+
+<div style={{display: 'flex', gap: '5px'}} className={`${s.pagination} ${isVisiblePromocodes ? s.visible : s.hidden}`}>
+                {Array.from({ length: Math.ceil(discountList.length / ITEMS_PER_PAGE) }, (_, i) => (
+                    <button key={i} onClick={() => handlePromocodesPageChange(i + 1)}>{i + 1}</button>
+                ))}
+            </div>
                 <p onClick={() => {
                     setIsVisiblePromocodes(false)      
                 }} style={{color: 'black', marginTop: '5px', fontWeight: '600', marginBottom: '15px', backgroundColor: 'lightgrey', borderRadius: '15px', padding: '15px', textAlign: 'center', display: isVisiblePromocodes ? 'flex' : 'none', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'}}> {isVisiblePromocodes ? '↑' : '↓'}</p>
@@ -329,7 +376,7 @@ interface accountInfoData {
                 </div>  
                 </>
 
-                )) : 'Аккаунтов нет'}
+                )) : <p style={{marginLeft: '15px', color: 'black'}}>Аккаунтов нет</p>}
 
    
            </div>

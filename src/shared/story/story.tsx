@@ -8,7 +8,7 @@ import { fetchStoryById, selectLoading, selectStoryById } from '../store/stories
 import { AppDispatch } from '../store/store';
 
 export const Story = ({id}: {id: string}) => {
-
+      
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate()
     const story = useSelector(selectStoryById(id));  // Используем новый селектор
