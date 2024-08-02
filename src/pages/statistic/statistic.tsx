@@ -84,10 +84,10 @@ function Statistic() {
             
 
             <div className={s.grid_container}>
-                <div className={s.grid_item}>Регистраций: { statistics ? statistics.registrations : '-'}</div>
-                <div className={s.grid_item}>Заработано: { statistics ? statistics.total_income : '-'}р</div>
-                <div className={s.grid_item}>Покупок: { statistics ? statistics.purchases : '-'}</div>
-                <div className={s.grid_item}>Будка поцелуев: { statistics ? statistics.lucky_kiss : '-'}</div>
+                <div style={{fontSize:'18px'}} className={s.grid_item}>Регистраций: { statistics ? statistics.registrations : '-'}</div>
+                <div style={{fontSize:'18px'}} className={s.grid_item}>Заработано: { statistics ? statistics.total_income : '-'}р</div>
+                <div style={{fontSize:'18px'}} className={s.grid_item}>Покупок: { statistics ? statistics.purchases : '-'}</div>
+                <div style={{fontSize:'18px'}} className={s.grid_item}>Будка поцелуев: { statistics ? statistics.lucky_kiss : '-'}</div>
                 {statistics ? statistics.purchased_items.map((item: any) => (
                         <div key={item.product__id} className={s.grid_item}>{item.product__name}: {item.number_of_items_purchased}</div>
 

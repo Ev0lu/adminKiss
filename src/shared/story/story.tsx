@@ -27,7 +27,7 @@ export const Story = ({id}: {id: string}) => {
 
    return ( 
    <div  className={s.story}> 
-    <h2 style={{marginBottom: '10px', fontSize: '18px', marginTop: '10px'}}>Сторис №{story && story.id}</h2>
+    <h2 style={{marginBottom: '10px', fontSize: '18px', marginTop: '10px'}}>Сторис ID:{story && story.id}</h2>
     <div style={{display: 'flex', gap: '10px', alignItems: 'center', justifyContent: 'start'}} className="preview">
       <p>Превью сторис:</p>
       <img style={{width: '50px', height: '50px'}} src={story ? story.preview : ""} alt="Preview" />

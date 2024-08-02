@@ -156,10 +156,10 @@ const Meditations = () => {
         </div>
     <div className={s.main_wrapper}>
       <div className={s.form_meditation}>
-        <h2 style={{marginBottom:'15px', fontWeight: '500', fontSize: '14px'}}>ДОБАВИТЬ/ИЗМЕНИТЬ</h2>
+        <h2 style={{marginBottom:'15px', fontWeight: '500', fontSize: '14px'}}>ДОБАВИТЬ</h2>
         <form onSubmit={handleFormSubmit}>
         <div className={s.formItem}>
-            <label>Айди:</label>
+            <label>Айди подкатегории:</label>
             <input type="text" placeholder='Пустое поле если новая медитация' value={id} onChange={(e) => setId(e.target.value)} />
           </div>
           <div className={s.formItem}>

@@ -449,7 +449,7 @@ export async function postStoriesVideo(data: FormData, accessToken: string | nul
   }
 
 export async function deleteStoriesVideo(id: string, accessToken: string | null) {
-    return await fetchApiResponse(`admin/stories/video/${id}`, {
+    return await fetchApiResponse(`admin/stories/videos/${id}`, {
       method: 'DELETE',
       headers: {
         'accept': 'application/json',

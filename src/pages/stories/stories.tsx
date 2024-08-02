@@ -117,11 +117,11 @@ const Stories = () => {
 
     <div className={s.main_wrapper}>
       <div className={s.form_meditation}>
-        <h2 style={{marginBottom:'15px', fontWeight: '500', fontSize: '14px'}}>ДОБАВИТЬ ВИДЕО В СТОРИС</h2>
+        <h2 style={{marginBottom:'15px', fontWeight: '500', fontSize: '14px'}}>ДОБАВИТЬ СТОРИС</h2>
         <form onSubmit={handleFormStoriesSubmit}>
         <div className={s.formItem}>
             <label>Айди сторис:</label>
-            <input type="text" placeholder='ID сторис' value={idStory} onChange={(e) => setIdStory(e.target.value)} />
+            <input type="text" placeholder='ID сторис. Расположены ниже.' value={idStory} onChange={(e) => setIdStory(e.target.value)} />
           </div>
           <div className={s.formItem}>
             <label>Видео:</label>
@@ -134,10 +134,10 @@ const Stories = () => {
       </div>
       <div className="wrapper">
           <div className={s.form_meditation_delete}>
-            <h2 style={{marginBottom:'15px', fontWeight: '500', fontSize: '14px'}}>УДАЛИТЬ ВИДЕО У СТОРИСА</h2>
+            <h2 style={{marginBottom:'15px', fontWeight: '500', fontSize: '14px'}}>УДАЛИТЬ СТОРИС</h2>
             <div className={s.formItem}>
                   <label>Айди:</label>
-                  <input type="text" placeholder='Id для удаления (31, 32, 34, 35)' value={idStoriesDelete} onChange={(e) => setStoriesIdDelete(e.target.value)} />
+                  <input type="text" placeholder='Id для удаления. Пр. 37' value={idStoriesDelete} onChange={(e) => setStoriesIdDelete(e.target.value)} />
                 </div>
                 <p style={{color: 'red', marginTop: '5px'}}>{storyDeleteError}</p>
 
@@ -154,7 +154,7 @@ const Stories = () => {
           </div>
           <div className={s.formItem}>
             <label>ID продуктов:</label>
-            <textarea value={storiesProducts} onChange={(e) => setStoriesProducts(e.target.value)} />
+            <textarea value={storiesProducts} placeholder='Пример: 38, 31, 28. Все товары можно найти в разделе акции' onChange={(e) => setStoriesProducts(e.target.value)} />
           </div>
           <div className={s.formItem}>
             <label>Превью:</label>

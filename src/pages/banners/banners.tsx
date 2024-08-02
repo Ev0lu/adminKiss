@@ -15,6 +15,7 @@ const Banners = () => {
   const [id, setId] = useState<string>('');
   const [product, setProduct] = useState<string>('');
   const [image, setImage] = useState<File | null>(null);
+  const [bannerDeleteError, setBannerPatchDeleteError] = useState<string>('');
 
   const getCategoriesById = async () => {
       const token = getToken('access');
@@ -44,8 +45,11 @@ const Banners = () => {
             navigate('/')
         };
       const response = await deleteBanner(idDelete, token)
-      if (response.status !== 200) {
-        setIdDelete('Error')
+      if (response.status === 200 || response.status === 201 || response.status === 204) {
+        setBannerPatchDeleteError('Успешно удалено')
+      } else {
+        setBannerPatchDeleteError('Произошла ошибка')
+
       }
   }
 
@@ -109,7 +113,7 @@ const Banners = () => {
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files.length > 0) {
-      setImage(files[0]); // or handle multiple files if needed
+      setImage(files[0]);
     }
   };
 
@@ -130,7 +134,7 @@ const Banners = () => {
         </div>
     <div className={s.main_wrapper}>
       <div className={s.form_meditation}>
-        <h2 style={{marginBottom:'15px', fontWeight: '500', fontSize: '14px'}}>ДОБАВИТЬ/ИЗМЕНИТЬ БАННЕР ДЛЯ ПРОДУКТА</h2>
+        <h2 style={{marginBottom:'15px', fontWeight: '500', fontSize: '14px'}}>ДОБАВИТЬ/ИЗМЕНИТЬ БАННЕР ДЛЯ ГЛАВНОЙ</h2>
         <form onSubmit={handleFormSubmit}>
         <div className={s.formItem}>
             <label>Айди баннера:</label>
@@ -141,7 +145,7 @@ const Banners = () => {
             <textarea value={product} onChange={(e) => setProduct(e.target.value)} />
           </div>
           <div className={s.formItem}>
-            <label>Картинки:</label>
+            <label>Изображение:</label>
             <input className={s.fileInput} required={false} name="file" type="file" accept="image/*" onChange={handleImageChange} />
           </div>
           <button className={s.btnUpload} type="submit">Сохранить</button>
@@ -150,11 +154,13 @@ const Banners = () => {
       </div>
       <div className="wrapper">
           <div className={s.form_meditation_delete}>
-            <h2 style={{marginBottom:'15px', fontWeight: '500', fontSize: '14px'}}>УДАЛИТЬ БАННЕР ПРОДУКТА</h2>
+            <h2 style={{marginBottom:'15px', fontWeight: '500', fontSize: '14px'}}>УДАЛИТЬ БАННЕР</h2>
             <div className={s.formItem}>
                   <label>Айди:</label>
                   <input type="text" placeholder='Id для удаления' value={idDelete} onChange={(e) => setIdDelete(e.target.value)} />
                 </div>
+                <p style={{color: 'red', marginTop: '5px', fontSize: '12px'}}>{bannerDeleteError}</p>
+
                 <button style={{marginTop: '50%'}} onClick={() => handleFormDelete()} className={s.btnUpload} type="submit">Удалить</button>
             </div>
             <div className={s.form_meditation_list}>
@@ -165,8 +171,8 @@ const Banners = () => {
   
                 {productBanners && productBanners.map((item: any) => (
                     <div style={{display: 'flex', gap: '10px', width: '100%', textAlign: 'center', justifyContent: 'center', alignItems: 'center', marginBottom: '10px'}} key={item.id}>
-                      <p>{item.id}:</p>
-                      <p>{item.product}:</p>
+                      <p>ID Баннера: {item.id}:</p>
+                      <p>ID Продукта: {item.product}:</p>
                       <img src={item.image} alt='img' style={{ width: '100px', height: '100px' }} />
                     </div>
                   ))}
@@ -181,11 +187,11 @@ const Banners = () => {
                 <input type="text" placeholder='ID категории' value={idCategoryBanner} onChange={(e) => setIdCategoryBanner(e.target.value)} />
               </div>
               <div className={s.formItem}>
-                <label>Картинки:</label>
-                <input className={s.fileInput} name="file" type="file" accept="image/*" multiple  />
+                <label>Изображение:</label>
+                <input className={s.fileInput} name="file" type="file" accept="image/*" onChange={handleImageChange}  />
               </div>
               <button className={s.btnUpload} style={{marginTop: '70px'}} type="submit">Сохранить</button>
-              <p style={{color: 'red', marginTop: '5px'}}>{categoryBannerError}</p>
+              <p style={{color: 'red', marginTop: '5px', fontSize: '12px'}}>{categoryBannerError}</p>
             </form>
           </div>
             <div className={s.form_meditation_list}>
