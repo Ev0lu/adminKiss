@@ -85,7 +85,7 @@ function Statistic() {
 
             <div className={s.grid_container}>
                 <div style={{fontSize:'18px'}} className={s.grid_item}>Регистраций: { statistics ? statistics.registrations : '-'}</div>
-                <div style={{fontSize:'18px'}} className={s.grid_item}>Заработано: { statistics ? statistics.total_income : '-'}р</div>
+                <div style={{fontSize:'18px'}} className={s.grid_item}>Заработано: { statistics ? `${Number(statistics.total_income)/100}` : '-'}р</div>
                 <div style={{fontSize:'18px'}} className={s.grid_item}>Покупок: { statistics ? statistics.purchases : '-'}</div>
                 <div style={{fontSize:'18px'}} className={s.grid_item}>Будка поцелуев: { statistics ? statistics.lucky_kiss : '-'}</div>
                 {statistics ? statistics.purchased_items.map((item: any) => (

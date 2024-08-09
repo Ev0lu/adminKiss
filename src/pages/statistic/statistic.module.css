@@ -19,6 +19,7 @@
 .statistic_wrapper{
     width: 85%;
     padding-top: 10px;
+    overflow-y: auto;
 }
 
 .header{
