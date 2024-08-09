@@ -97,6 +97,8 @@ function Orders() {
                     <div className={s.grid_item}>Сервис доставки:</div>
                     <div className={s.grid_item}>Цена:</div>
                     <div className={s.grid_item}></div>
+                    <div className={s.grid_item}></div>
+
             </div>  
 
             {order && order.map((order: any) => (
@@ -108,6 +110,7 @@ function Orders() {
                             <div className={s.grid_item}>{order.recipient_email ? order.recipient_email : '-'}</div>
                             <div className={s.grid_item}>{order.delivery_service ? order.delivery_service : '-'}</div>
                             <div className={s.grid_item}>{order.final_price}</div>
+                            <div className={s.grid_item}>{order.status}</div>
                             <div onClick={() => {
                                 if (selectedItemId !== ''){
                                     if (order.code === selectedItemId) {
@@ -158,7 +161,7 @@ function Orders() {
                     <div className={s.grid_item}>{orderById ? orderById.recipient_name : '-'}</div>
                     <div className={s.grid_item}>{orderById ? orderById.recipient_email : '-'}</div>
                     <div className={s.grid_item}>{orderById ? orderById.delivery_service : '-'}</div>
-                    <div className={s.grid_item}>-</div>
+                    <div className={s.grid_item}>{orderById ? orderById.status : '-'}</div>
                     <div onClick={() => {
                             if (selectedItemId !== '' ) {
                                 setSelectedItemId('')

@@ -58,7 +58,7 @@ option{
 
 .grid_container_about{
     display: grid;
-    grid-template-columns: repeat(7, 0.3fr);
+    grid-template-columns: repeat(8, 0.25fr);
     overflow: auto;
     background-color: rgb(37, 36, 36);
     margin: 15px;
@@ -80,7 +80,7 @@ option{
 
 .grid_container {
     display: grid;
-    grid-template-columns: repeat(7, 0.3fr);
+    grid-template-columns: repeat(8, 0.25fr);
     padding: 10px;
     overflow: auto;
     background-color: rgb(37, 36, 36);
@@ -114,7 +114,7 @@ option{
     
     .grid_container {
         display: grid;
-        grid-template-columns: repeat(7, 0.3fr);
+        grid-template-columns: repeat(8, 0.25fr);
         padding: 10px;
         margin-left: 0;
     }
