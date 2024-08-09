@@ -311,7 +311,7 @@ const paginatedDiscountList = getPaginatedData(discountList, currentPagePromocod
                                 ))}
                             </div>                    </div>
                 )) : 
-                    <div className={`${s.order} ${isVisibleOrders ? s.visible : s.hidden}`}>
+                    <div className={`${s.order} ${isVisibleOrders ? s.visibleOrder : s.hiddenOrder}`}>
                         <p>Нет информации</p>
                     </div> 
                 }
@@ -358,7 +358,7 @@ const paginatedDiscountList = getPaginatedData(discountList, currentPagePromocod
                 
                 
                 :
-                    <div className={`${s.promocodes} ${isVisiblePromocodes ? s.visible : s.hidden}`}>
+                    <div className={`${s.promocodes} ${isVisiblePromocodes ? s.visiblePromocode : s.hiddenPromocode}`}>
                         <p>Нет информации</p>
                     </div>
                 }

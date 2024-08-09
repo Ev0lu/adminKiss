@@ -4,6 +4,100 @@ import Navbar from '../../shared/navbar/navbar'
 import { createPromocode, createSpecialOffer, deleteOffer, deletePromocode, getCategories, getOffers, getPromocodes } from '../../shared/api';
 import { useNavigate } from 'react-router-dom';
 import { getToken, setToken } from '../../App';
+import Select from 'react-select';
+
+
+interface ProductSelectorProps {
+    setOfferProducts: React.Dispatch<React.SetStateAction<string>>,
+    placeholder: string;
+  }
+  
+  const ProductSelector: React.FC<ProductSelectorProps> = ({ setOfferProducts, placeholder }) => {
+    const [products, setProducts] = useState<any[]>([]);
+    const [, setSelectedProducts] = useState<any[]>([]);
+    const [productOptions, setProductOptions] = useState<any[]>([]);
+    const navigate = useNavigate();
+  
+    const getCategoriesById = async () => {
+      const token = getToken('access');
+      if (!token) {
+        navigate('/');
+        return;
+      }
+      const response = await getCategories('0', token);
+      const data = await response.json();
+      setProducts(data.contents);
+    };
+  
+    useEffect(() => {
+      getCategoriesById();
+    }, []);
+  
+    useEffect(() => {
+      if (products.length > 0) {
+        const options = products.map(product => ({
+          value: product.id,
+          label: `${product.id}: ${product.name}`
+        }));
+        setProductOptions(options);
+      }
+    }, [products]);
+  
+    const handleSelectChange = (selectedOptions: any) => {
+      const selectedValues = selectedOptions ? selectedOptions.map((option: { value: any }) => option.value) : [];
+      setSelectedProducts(selectedValues);
+      setOfferProducts(selectedValues.join(', '));
+    };
+
+
+    const customStyles = {
+        control: (provided: any) => ({
+            ...provided,
+            color: 'black'
+        }),
+        singleValue: (provided: any) => ({
+            ...provided,
+            color: 'black'
+        }),
+        menu: (provided: any) => ({
+            ...provided,
+            color: 'black'
+        }),
+        option: (provided: any, state: any) => ({
+            ...provided,
+            color: state.isSelected ? 'black' : 'black'
+        }),
+        multiValue: (provided: any) => ({
+            ...provided,
+            color: 'black'
+        }),
+        multiValueLabel: (provided: any) => ({
+            ...provided,
+            color: 'black'
+        }),
+        placeholder: (provided: any) => ({
+            ...provided,
+            color: 'black'
+        }),
+    };
+
+  
+    return (
+      <div style={{width: '100%', marginBottom: '10px'}}>
+        <Select
+          isMulti
+          options={productOptions}
+          onChange={handleSelectChange}
+          styles={customStyles}
+          placeholder={placeholder}
+        />
+
+      </div>
+    );
+  };
+
+
+
 
 function SpecialOffers() { 
 
@@ -67,6 +161,11 @@ function SpecialOffers() {
   const [userId, setUserId] = useState('');
   const [date, setDate] = useState('');
   const [code, setCode] = useState('');
+
+  const [promocodeError, setPromocodeError] = useState('');
+
+  const [offerError, setOfferError] = useState('');
+
   const navigate = useNavigate()
 
   const handleInputChange = (e: any) => {
@@ -98,12 +197,17 @@ function SpecialOffers() {
             "one_use": selectedCountUsability === "true"
         }
         const response = await createPromocode(dataPromo, token)
-        
+        if (response.status === 200 || response.status === 201) {
+            setPromocodeError('Успешно создано/пропатчено')
+          } else {
+            setPromocodeError('Возникла ошибка')
+          } 
         if (response.status === 401) {
         } else {
             const data = await response.json()
             console.log(data)
             await getAllPromocodes()  
+            
 
         }
   }
@@ -130,7 +234,11 @@ function SpecialOffers() {
             ...(selectedGoodsExclude && {"exclude_products": exclude}),
         }
         const response = await createSpecialOffer(dataPromo, token)
-        
+        if (response.status === 200 || response.status === 201) {
+            setOfferError('Успешно создано/пропатчено')
+          } else {
+            setOfferError('Возникла ошибка')
+          } 
         if (response.status === 401) {
         } else {
             const data = await response.json()
@@ -286,7 +394,7 @@ function SpecialOffers() {
                         </select>
                     </form>
 
-                    <div className={s.registrationForm_field}>
+                    {/*<div className={s.registrationForm_field}>
                             <input
                             value={selectedGoodsInclude}
                             onChange={(e) => setSelectedGoodsInclude(e.target.value)}
@@ -294,13 +402,18 @@ function SpecialOffers() {
 
 
 
-                        </div> 
-                        <div className={s.registrationForm_field}>
+                        </div>*/}
+                        <ProductSelector setOfferProducts={setSelectedGoodsInclude} placeholder='Включая id товаров' />
+                        <ProductSelector setOfferProducts={setSelectedGoodsExclude} placeholder='Исключая id товаров' />
+                        <p style={{color: 'red', marginTop: '5px'}}>{offerError}</p>
+
+
+                        {/*<div className={s.registrationForm_field}>
                             <input
                             value={selectedGoodsExclude}
                             onChange={(e) => setSelectedGoodsExclude(e.target.value)}
                             className={`${s.registrationForm_field__input__password}`} placeholder='Исключая id товаров(через запятую)'></input>
-                        </div> 
+                        </div>*/}
                 </div>
                 <div className={s.main_stats}>
                     <div className={s.offersList}>
@@ -398,6 +511,8 @@ function SpecialOffers() {
                                 onChange={(e) => setCode(e.target.value)}
                                 className={`${s.registrationForm_field__input__password}`} placeholder='Код купона(опционально)'></input>
                         </div> 
+                        <p style={{color: 'red', marginTop: '5px'}}>{promocodeError}</p>
+
                 </div>        
                 <div className={s.main_stats}>
                         <div className={s.promocodesList}>

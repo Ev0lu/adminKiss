@@ -296,3 +296,8 @@ option{
     margin-right: 30px;
     padding-left: 5px;
 }
+
+
+.main_specialOffer{
+    z-index: 9999;
+}

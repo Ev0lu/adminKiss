@@ -75,7 +75,7 @@ function Logs() {
                         <div className={s.grid_item}>Время</div>
                     </div>     
 
-                {logs ? logs.results.map((item: any) => (
+                {logs?.results ? logs.results.map((item: any) => (
                     <div className={s.grid_container}>
                         <div key={item.action} className={s.grid_item}>{item.action}</div>
                         <div key={item.admin} className={s.grid_item}>{item.admin}</div>
