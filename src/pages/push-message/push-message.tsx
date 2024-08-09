@@ -38,7 +38,7 @@ function PushMessage() {
         } else if (response.status === 403) {
             setError('Пользователь выключил уведомления')
         } else {
-            setError('Error')
+            setError('Ошибка')
         }
     }
 

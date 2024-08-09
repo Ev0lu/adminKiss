@@ -58,7 +58,7 @@ option{
 
 .grid_container_about{
     display: grid;
-    grid-template-columns: repeat(8, 0.25fr);
+    grid-template-columns: repeat(8, 0.20fr);
     overflow: auto;
     background-color: rgb(37, 36, 36);
     margin: 15px;
@@ -79,8 +79,9 @@ option{
 }
 
 .grid_container {
+    text-align: center;
     display: grid;
-    grid-template-columns: repeat(8, 0.25fr);
+    grid-template-columns: repeat(8, 0.20fr);
     padding: 10px;
     overflow: auto;
     background-color: rgb(37, 36, 36);
@@ -105,7 +106,7 @@ option{
     font-weight: 700;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     box-sizing: border-box;
   }
@@ -114,7 +115,7 @@ option{
     
     .grid_container {
         display: grid;
-        grid-template-columns: repeat(8, 0.25fr);
+        grid-template-columns: repeat(8, 0.20fr);
         padding: 10px;
         margin-left: 0;
     }

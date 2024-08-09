@@ -109,7 +109,7 @@ function Orders() {
                             <div className={s.grid_item}>{order.recipient_name ? order.recipient_name : '-'}</div>
                             <div className={s.grid_item}>{order.recipient_email ? order.recipient_email : '-'}</div>
                             <div className={s.grid_item}>{order.delivery_service ? order.delivery_service : '-'}</div>
-                            <div className={s.grid_item}>{order.final_price}</div>
+                            <div className={s.grid_item}>{`${Number(order.final_price)/100}`}</div>
                             <div className={s.grid_item}>{order.status}</div>
                             <div onClick={() => {
                                 if (selectedItemId !== ''){

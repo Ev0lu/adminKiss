@@ -325,14 +325,14 @@ option{
 .items{
     display: flex;
     gap: 5px;
-    height: 150px;
+    height: 80px;
     margin-left: 30px;
     width: 100%;
 }
 
 .items_wrapper{
     width: 35%;
-    height: 150px;
+    height: 80px;
     
 }
 

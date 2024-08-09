@@ -197,7 +197,7 @@ const paginatedDiscountList = getPaginatedData(discountList, currentPagePromocod
 
                         }} style={{color: 'white', fontWeight: '300', cursor: 'pointer', width: '150px', marginLeft: '50px'}} className={s.grid_item}>Подробнее {item.id === selectedItemId ? '↓' : '↑'}</button>
                                 
-                        {flagToChangeProfileInfo ?
+                        {/*{flagToChangeProfileInfo ?
                                 <div style={{color: 'blue', fontWeight: '300', cursor: 'pointer'}} className={s.grid_item} onClick={() => {
                                 setFlagToChangeProfileInfo(false)
                             }}></div>
@@ -206,7 +206,7 @@ const paginatedDiscountList = getPaginatedData(discountList, currentPagePromocod
                                 patchProfile(item.id)
                                 setFlagToChangeProfileInfo(true)
 
-                            }}></div> }
+                            }}></div> }*/}
 
                     </div>     
 

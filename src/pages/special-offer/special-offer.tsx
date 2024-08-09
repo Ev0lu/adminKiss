@@ -198,7 +198,7 @@ function SpecialOffers() {
         }
         const response = await createPromocode(dataPromo, token)
         if (response.status === 200 || response.status === 201) {
-            setPromocodeError('Успешно создано/пропатчено')
+            setPromocodeError('Успешно создано')
           } else {
             setPromocodeError('Возникла ошибка')
           } 
@@ -235,7 +235,7 @@ function SpecialOffers() {
         }
         const response = await createSpecialOffer(dataPromo, token)
         if (response.status === 200 || response.status === 201) {
-            setOfferError('Успешно создано/пропатчено')
+            setOfferError('Успешно создано')
           } else {
             setOfferError('Возникла ошибка')
           } 
@@ -261,7 +261,6 @@ function SpecialOffers() {
         if (response.status === 401) {
         } else {
             const data = await response.json()
-            console.log(data)
             setPromocodes(data)
             setFilteredPromocode(data)
             
@@ -279,7 +278,6 @@ function SpecialOffers() {
         if (response.status === 401) {
         } else {
             const data = await response.json()
-            console.log(data)
             setOffers(data)
             setFilteredDiscount(data)
             
