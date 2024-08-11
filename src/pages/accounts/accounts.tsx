@@ -131,6 +131,25 @@ const getPaginatedData = (data: any[], page: number) => {
 const paginatedOrderList = getPaginatedData(orderList, currentPageOrders);
 const paginatedDiscountList = getPaginatedData(discountList, currentPagePromocodes);
 
+
+const ACCOUNT_ITEMS_PER_PAGE = 20
+const [currentPage, setCurrentPage] = useState(1);
+
+const totalPages = Math.ceil((accounts ? accounts.length : 0) / ACCOUNT_ITEMS_PER_PAGE);
+
+const handlePageChange = (newPage: number) => {
+  if (newPage >= 1 && newPage <= totalPages) {
+    setCurrentPage(newPage);
+  }
+};
+
+const getPaginatedAccounts = (data: accountData[], page: number) => {
+  const startIndex = (page - 1) * ACCOUNT_ITEMS_PER_PAGE;
+  return data.slice(startIndex, startIndex + ACCOUNT_ITEMS_PER_PAGE);
+};
+
+const paginatedAccounts = getPaginatedAccounts(accounts ? accounts : [], currentPage);
+
   return (
     <div className={s.statisticPage}>
         <Navbar />
@@ -168,7 +187,7 @@ const paginatedDiscountList = getPaginatedData(discountList, currentPagePromocod
                         <div className={s.grid_item}></div>
                     </div>     
 
-                {accounts ? accounts.map((item: any) => (
+                {accounts ? paginatedAccounts.map((item: any) => (
                     <div >
                     <div key={item.id} className={s.grid_container}>
                         <div className={s.grid_item}>{item.id}</div>
@@ -376,7 +395,18 @@ const paginatedDiscountList = getPaginatedData(discountList, currentPagePromocod
                 </div>  
                 </ div>
 
-                )) : <p style={{marginLeft: '15px', color: 'black'}}>Аккаунтов нет</p>}
+                )) : <p style={{marginLeft: '15px', color: 'black'}}>Подождите...</p>}
+       <div style={{ margin: '15px' }} className={s.pagination}>
+            <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+              « Предыдущий
+            </button>
+            <span style={{ color: 'black', paddingLeft: '10px', paddingRight: '10px' }}>
+              Страница {currentPage} из {totalPages}
+            </span>
+            <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+              Следующий »
+            </button>
+          </div>
 
    
            </div>

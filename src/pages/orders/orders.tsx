@@ -62,6 +62,27 @@ function Orders() {
     }
 
 
+
+
+    const ORDER_ITEMS_PER_PAGE = 20
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const totalPages = Math.ceil((order ? order.length : 0) / ORDER_ITEMS_PER_PAGE);
+
+    const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+        setCurrentPage(newPage);
+    }
+    };
+
+    const getPaginatedAccounts = (data: any[], page: number) => {
+    const startIndex = (page - 1) * ORDER_ITEMS_PER_PAGE;
+    return data.slice(startIndex, startIndex + ORDER_ITEMS_PER_PAGE);
+    };
+
+    const paginatedAccounts = getPaginatedAccounts(order ? order : [], currentPage);
+
+
   return (
     <div className={s.statisticPage}>
         <Navbar />
@@ -101,7 +122,7 @@ function Orders() {
 
             </div>  
 
-            {order && order.map((order: any) => (
+            {paginatedAccounts && paginatedAccounts.map((order: any) => (
                 <>
                     <div  className={`${s.grid_container}`}> 
                             <div className={s.grid_item}>{order.code}</div>
@@ -172,6 +193,17 @@ function Orders() {
                         }} style={{color: 'blue', fontWeight: '300', cursor: 'pointer'}} className={s.grid_item}>Подробнее {orderById ? orderById.code === selectedItemId ? '↓' : '↑'  : ''}</div>
 
              </div>  
+             <div style={{ margin: '15px' }} className={s.pagination}>
+            <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+              « Предыдущий
+            </button>
+            <span style={{ color: 'black', paddingLeft: '10px', paddingRight: '10px' }}>
+              Страница {currentPage} из {totalPages}
+            </span>
+            <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+              Следующий »
+            </button>
+          </div>
              <div  className={`${s.grid_container_about_more} ${orderById ? orderById.code === selectedItemId ? s.active : s.unactive : s.unactive}`}>
                     <div className={`${s.grid_container_about_more_wrapper}`}>
                             <div className={s.grid_item}>ID Продукта:</div>
@@ -192,6 +224,7 @@ function Orders() {
                     </div>  
             </>   
         </div>
+
     </div>
 )
 }

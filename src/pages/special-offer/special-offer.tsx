@@ -342,6 +342,46 @@ function SpecialOffers() {
         setFilteredCategories(filtered);
     };
 
+
+
+    const PROMOCODES_ITEMS_PER_PAGE = 20
+    const [currentPromocodePage, setCurrentPromoodePage] = useState(1);
+
+    const totalPromocodePages = Math.ceil((filteredPromocode ? filteredPromocode.length : 0) / PROMOCODES_ITEMS_PER_PAGE);
+
+    const handlePageChangePromocodes = (newPage: number) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+        setCurrentPromoodePage(newPage);
+    }
+    };
+
+    const getPaginatedPromocodes = (data: any[], page: number) => {
+    const startIndex = (page - 1) * PROMOCODES_ITEMS_PER_PAGE;
+    return data.slice(startIndex, startIndex + PROMOCODES_ITEMS_PER_PAGE);
+    };
+
+    const paginatedPromocodes = getPaginatedPromocodes(filteredPromocode ? filteredPromocode : [], currentPromocodePage);
+
+
+    const OFFER_ITEMS_PER_PAGE = 20
+    const [currentOfferPage, setCurrentOfferPage] = useState(1);
+
+    const totalPages = Math.ceil((filteredDiscount ? filteredDiscount.length : 0) / OFFER_ITEMS_PER_PAGE);
+
+    const handlePageOffersChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+        setCurrentOfferPage(newPage);
+    }
+    };
+
+    const getPaginatedOffers = (data: any[], page: number) => {
+    const startIndex = (page - 1) * OFFER_ITEMS_PER_PAGE;
+    return data.slice(startIndex, startIndex + OFFER_ITEMS_PER_PAGE);
+    };
+
+    const paginatedOffers = getPaginatedOffers(filteredDiscount ? filteredDiscount : [], currentOfferPage);
+
+
   return (
     <div className={s.statisticPage}>
         <Navbar />
@@ -433,7 +473,7 @@ function SpecialOffers() {
                                 <div className={s.grid_item}></div>
                             </div>  
 
-                            {filteredDiscount ? filteredDiscount.map((item: offerData) => (
+                            {paginatedOffers ? paginatedOffers.map((item: offerData) => (
 
 
 
@@ -452,6 +492,17 @@ function SpecialOffers() {
                                         )
 
                                         ) : '-'}
+                                <div style={{ margin: '15px' }} className={s.pagination}>
+                                    <button onClick={() => handlePageOffersChange(currentOfferPage - 1)} disabled={currentOfferPage === 1}>
+                                    « Предыдущий
+                                    </button>
+                                    <span style={{ color: 'black', paddingLeft: '10px', paddingRight: '10px' }}>
+                                    Страница {currentOfferPage} из {totalPages}
+                                    </span>
+                                    <button onClick={() => handlePageOffersChange(currentOfferPage + 1)} disabled={currentOfferPage === totalPages}>
+                                    Следующий »
+                                    </button>
+                                </div>
                             </div>
                     </div> 
                 </div>  
@@ -527,7 +578,7 @@ function SpecialOffers() {
                                 <div className={s.grid_item}>Код:</div>
                                 <div className={s.grid_item}></div>
                             </div>  
-                            {filteredPromocode ? filteredPromocode.map((item: promocodeData) => (
+                            {paginatedPromocodes ? paginatedPromocodes.map((item: promocodeData) => (
                                         <div  key={item.id} className={`${s.grid_container}`}> 
                                             <div className={s.grid_item}>{item.id}</div>
                                             <div className={s.grid_item}>{item.expiration_date ? item.expiration_date : '-'}</div>
@@ -542,7 +593,19 @@ function SpecialOffers() {
                                         </div>
                                     )
                                     ) : '-'}
+                                <div style={{ margin: '15px' }} className={s.pagination}>
+                                    <button onClick={() => handlePageChangePromocodes(currentPromocodePage - 1)} disabled={currentPromocodePage === 1}>
+                                    « Предыдущий
+                                    </button>
+                                    <span style={{ color: 'black', paddingLeft: '10px', paddingRight: '10px' }}>
+                                    Страница {currentPromocodePage} из {totalPromocodePages}
+                                    </span>
+                                    <button onClick={() => handlePageChangePromocodes(currentPromocodePage + 1)} disabled={currentPromocodePage === totalPromocodePages}>
+                                    Следующий »
+                                    </button>
+                                </div>
                            </div>
+                           
                     </div>
                 </div>
             </div>

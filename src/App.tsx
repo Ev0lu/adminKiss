@@ -147,7 +147,7 @@ const router = createBrowserRouter([
     )
   },
 
-], { basename: '/admin' })
+], { basename: '/kissmy/admin' })
 
 function App() { 
   
